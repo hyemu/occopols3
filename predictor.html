@@ -1,115 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="answer-styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Honk&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Honk&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <title>Employability Prediction</title>
     <style>
-        /* Reset default margins and set up base structure */
-        html, body {
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            font-family: Arial, sans-serif;
-        }
+        .anton-regular {
+  font-family: "Anton", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
 
-        body {
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-        }
+.inter-predict {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
 
-        /* Content wrapper */
-        .content {
-            padding: 20px;
-        }
 
-        /* Main container for the form */
-        .main-container {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: calc(100vh - 100px);
-            padding: 20px;
-            box-sizing: border-box;
-            margin-top: 80px;
-        }
+        @keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+    html, body {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        font-family: Arial, sans-serif;
+    }
 
-        /* Form container */
-        .form-container {
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: 80%;
-            max-width: 600px;
-        }
+    h1{
+        font-family: "Anton", sans-serif;
+    }
+    /* Main form container with dark mode gradient and flexbox */
+    .form-container {
+        background: linear-gradient(135deg, #020617, #6a1b9a); /* Dark blue to purple gradient */
+        backdrop-filter: blur(15px); /* Frosted glass effect */
+        border-radius: 50px;
+        padding: 40px;
+        animation: fadeIn 1s ease-out;
+        width: 40%;
+        max-width: 1200px;
+        color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border: 10px solid rgba(255, 255, 255, 0.3);
+        display: flex;
+        flex-direction: column;
+        gap: 20px; /* Space between inputs and button */
+        align-items: flex-start; /* Align all items to the left */
+        justify-content: center;
+        margin-left: 30%;
+        margin-top: 10%;
+        margin-bottom: 40px; /* Added margin to create space between form and results */
+    }
 
-        /* Input styling */
-        .form-container input, .form-container select {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
+    /* Input and Select fields with glow effect */
+    .form-container input, .form-container select {
+        width: 100%; /* 100% width for left alignment */
+        padding: 12px;
+        margin: 10px 0;
+        border: 2px solid #6c6499;
+        border-radius: 8px;
+        background-color: rgba(0, 0, 0, 0.3);
+        color: #fff;
+        box-sizing: border-box;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 8px rgba(173, 155, 255, 0.6); /* Glow effect */
+    }
 
-        /* Button styling */
-        .form-container button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
+    /* Input hover effect */
+    .form-container input:hover, .form-container select:hover {
+        border-color: #9e4f9e;
+        box-shadow: 0 0 12px rgba(173, 155, 255, 1); /* Increased glow on hover */
+        transform: scale(1.05); /* Slight zoom effect */
+        box-shadow: 0 0 12px rgba(173, 155, 255, 1); /* Increased glow on hover */
+    }
 
-        .form-container button:hover {
-            background-color: #45a049;
-        }
+    /* Button styling */
+    .form-container button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-top: 20px;
+        width: 100%; /* Button width to match the input width */
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
 
-        /* Results section */
-        .results {
-            margin-top: 30px;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #fff;
-            display: none; /* Initially hide results */
-        }
+    /* Button hover effect */
+    .form-container button:hover {
+        background-color: #45a049;
+        transform: translateY(-5px); /* Button lifts up */
+        box-shadow: 0 4px 12px rgba(173, 155, 255, 0.4);
+    }
+    .form-container label {
+        font-family: "Inter", sans-serif;
 
-        .results p {
-            font-size: 24px;
-            font-weight: bold;
-            text-align: center;
-        }
+    }
 
-        /* Prediction text and icon */
-        .prediction-text {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 10px;
-        }
+    /* Results section with the same UI design */
+    .results {
+        margin-top: 40px; /* Space above results */
+        padding: 20px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #020617, #6a1b9a); /* Dark blue to purple gradient */
+        backdrop-filter: blur(15px); /* Frosted glass effect */
+        color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border: 10px solid rgba(255, 255, 255, 0.3);
+        width: 80%;  /* Adjust width */
+        max-width: 800px; /* Restrict max-width for better layout */
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+        justify-content: center;
+        margin-left: auto;
+        margin-right: auto;
+        display: none; /* Hidden by default */
+    }
 
-        .prediction-text .icon {
-            font-size: 40px;
-            margin-right: 10px;
-        }
+    /* Results text styling */
+    .results p {
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+    }
 
-        .prediction-text h4 {
-            font-weight: bold;
-            font-size: 24px;
-        }
+    /* Flexbox structure for prediction text and icon */
+    .prediction-text {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .prediction-text .icon {
+        font-size: 40px;
+        margin-right: 10px;
+    }
+
+    .prediction-text h4 {
+        font-weight: bold;
+        font-size: 24px;
+    }
     </style>
 </head>
+
 <body>
     <nav class="nav-bar">
-        <img src="banner.png" alt="Logo"> 
+        <img src="banner.png" alt="Logo">
         <button class="neon-button" onclick="window.location.href='index.html'">
             <i class='bx bx-home'></i>
             <span class="tooltip">Home</span>
@@ -127,10 +185,10 @@
             <span class="tooltip">Data</span>
         </button>
     </nav>
-    
-    
+
+
     <div class="form-container">
-        <h2>Enter Your Details</h2>
+        <h1>🤖 Employability Predictor </h1>
         <form id="predict-form">
             <label for="student_id">Student ID (e.g., 2x-xxxxx):</label>
             <input type="text" id="student_id" name="student_id" pattern="21-\d{5}" placeholder="2x-xxxxx" required>
@@ -189,7 +247,7 @@
     <script>
         async function predictEmployability(formData) {
             try {
-                const response = await fetch(`${window.location.origin}/predict`, { 
+const response = await fetch(`https://knnpulse-production.up.railway.app/predict`, { 
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)
@@ -252,4 +310,5 @@
         });
     </script>
 </body>
+
 </html>
