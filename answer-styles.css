@@ -303,31 +303,53 @@ body {
 
 body {
     margin: 0;
-    height: 100vh;
-    display: flex;
+    height: 200vh; /* To enable scrolling */
     justify-content: center;
     align-items: center;
-    background-color: #020617;
     font-family: Arial, sans-serif;
     overflow-x: hidden; /* Prevent horizontal overflow */
     position: relative;
     padding-top: 60px; /* Adds space for the navbar so content doesn't hide under it */
+    background: linear-gradient(45deg, #0d0523fb, #20033b); /* Starting gradient */
+    background-size: 400% 400%; /* To create a larger area for the gradient to move */
+    animation: moveGradient 40s infinite linear; /* Move the gradient slowly */
 }
+
+/* Keyframe animation to move the gradient randomly */
+@keyframes moveGradient {
+    0% {
+        background-position: 0% 0%; /* Starting point */
+    }
+    25% {
+        background-position: 100% 0%; /* Move right */
+    }
+    50% {
+        background-position: 100% 100%; /* Move bottom-right */
+    }
+    75% {
+        background-position: 0% 100%; /* Move left */
+    }
+    100% {
+        background-position: 0% 0%; /* Return to starting point */
+    }
+}
+
 
 .nav-bar {
     display: flex;
-    gap: 20px;
+    gap: 50px;
     padding: 10px 40px; /* Adjust padding for height */
     background-color: #041b36;
-    border-radius: 50px;
+    border-radius: 60px;
     box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
     position: fixed; /* Fix the navbar at the top */
-    top: 30px; /* Keep it at the very top */
+    top: 20px; /* Keep it at the very top */
     left: 50%; /* Center it horizontally */
     transform: translateX(-50%); /* Adjust for perfect centering */
     z-index: 1000; /* Ensure it stays on top of other content */
     width: auto; /* Adjust navbar width to fit content */
     overflow: hidden; /* Hide the overflow for the blur effect */
+    transition: transform 0.3s ease; /* Smooth transition for transform */
 }
 
 .nav-bar::after {
@@ -338,7 +360,7 @@ body {
     bottom: 0;
     left: 0;
     background: linear-gradient(to left, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.6)); /* Gradient effect */
-    filter: blur(5px); /* Blur the right side */
+    filter: blur(1px); /* Blur the right side */
     z-index: -1; /* Ensure it stays behind the navbar */
 }
 
@@ -409,6 +431,7 @@ body {
         opacity: 0;
     }
 }
+
 .nav-bar img {
     width: 190px; /* Adjust size as needed */
     height: 40px;
