@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Evaluation Form</title>
+    <link rel="stylesheet" href="answer-styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="nav-bar">
+        <img src="banner.png" alt="Logo"> 
+        <button class="neon-button" onclick="window.location.href='index.html'">
+            <i class='bx bx-home'></i>
+            <span class="tooltip">Home</span>
+        </button>
+        <button class="neon-button" onclick="window.location.href='evaluation.html'">
+            <i class='bx bx-clipboard'></i>
+            <span class="tooltip">Evaluation</span>
+        </button>
+        <button class="neon-button" onclick="window.location.href='predictor.html'">
+            <i class='bx bx-line-chart'></i>
+            <span class="tooltip">Prediction</span>
+        </button>
+        <button class="neon-button" onclick="window.location.href='data.html'">
+            <i class='bx bx-data'></i>
+            <span class="tooltip">Data</span>
+        </button>
+    </nav>
+    
+     
+    <div class="container">
+        <div class="header">
+            <h1>Student Evaluation Form</h1>
+        </div>
+
+        <form id="evaluationForm">
+            <div class="student-info">
+                <div class="input-group">
+                    <label for="studentId">Student ID:</label>
+                    <input type="text" id="studentId" required>
+                </div>
+                <div class="input-group">
+                    <label for="gender">Gender:</label>
+                    <select id="gender" required>
+                        <option value="">Select gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                  <select id="department" required>
+                    <option value="">Select department</option>
+                    <option value="CCS">College of Computer Studies</option>
+                    <option value="CON">College of Nursing</option>
+                    <option value="CBA">College of Business Administration</option>
+                    <option value="CAS">College of Arts and Sciences</option>
+                    <option value="COE">College of Engineering</option>
+                    <option value="CED">College of Education</option>
+                    <option value="COL">College of Law</option>
+                    <option value="COM">College of Medicine</option>
+                </select>
+            </div>
+        </div>
+
+
+            <div class="legend">
+                <div class="legend-title">Rating Scale</div>
+                <div class="legend-item"><strong>1:</strong> Needs Improvement</div>
+                <div class="legend-item"><strong>2:</strong> Below Average</div>
+                <div class="legend-item"><strong>3:</strong> Average</div>
+                <div class="legend-item"><strong>4:</strong> Above Average</div>
+                <div class="legend-item"><strong>5:</strong> Excellent</div>
+            </div>
+
+            <div id="sections"></div>
+
+            <button type="submit" class="btn">Submit Evaluation</button>
+        </form>
+
+      <!-- Add the results section -->
+      <div class="results-section" id="results">
+        <h2 class="results-title">Evaluation Results</h2>
+        <div id="sectionScores"></div>
+    </div>
+</div>
+    </div>
+
+    <!-- Link to questions.js -->
+    <script src="questions.js"></script>
+    <!-- Call questions() to display questions -->
+    <script>questions();</script>
+    <script>
+
+
+        function createRatingGroup(sectionIndex, questionIndex, criteriaIndex) {
+            const group = document.createElement('div');
+            group.className = 'rating-group';
+            
+            for (let i = 1; i <= 5; i++) {
+                const option = document.createElement('div');
+                option.className = 'rating-option';
+                
+                const input = document.createElement('input');
+                input.type = 'radio';
+                input.name = `rating_${sectionIndex}_${questionIndex}_${criteriaIndex}`;
+                input.value = i;
+                input.id = `rating_${sectionIndex}_${questionIndex}_${criteriaIndex}_${i}`;
+                input.required = true;
+                
+                const label = document.createElement('label');
+                label.htmlFor = input.id;
+                label.textContent = i;
+                
+                option.appendChild(input);
+                option.appendChild(label);
+                group.appendChild(option);
+            }
+            
+            return group;
+        }
+
+        function renderForm() {
+            const sectionsContainer = document.getElementById('sections');
+            
+            sections.forEach((section, sectionIndex) => {
+                const sectionDiv = document.createElement('div');
+                sectionDiv.className = 'section';
+                
+                const title = document.createElement('h2');
+                title.className = 'section-title';
+                title.textContent = section.title;
+                sectionDiv.appendChild(title);
+                
+                section.questions.forEach((questionData, questionIndex) => {
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'question';
+                    
+                    const questionText = document.createElement('div');
+                    questionText.className = 'question-text';
+                    questionText.textContent = questionData.question;
+                    questionDiv.appendChild(questionText);
+                    
+                    const criteriaDiv = document.createElement('div');
+                    criteriaDiv.className = 'criteria';
+                    
+                    questionData.criteria.forEach((criterion, criteriaIndex) => {
+                        const criteriaItem = document.createElement('div');
+                        criteriaItem.className = 'criteria-item';
+                        
+                        const criteriaLabel = document.createElement('div');
+                        criteriaLabel.className = 'criteria-label';
+                        criteriaLabel.textContent = criterion.label;
+                        
+                        criteriaItem.appendChild(criteriaLabel);
+                        criteriaItem.appendChild(createRatingGroup(sectionIndex, questionIndex, criteriaIndex));
+                        criteriaDiv.appendChild(criteriaItem);
+                    });
+                    
+                    questionDiv.appendChild(criteriaDiv);
+                    sectionDiv.appendChild(questionDiv);
+                });
+                
+                sectionsContainer.appendChild(sectionDiv);
+            });
+        }
+
+        function collectFormData() {
+            const formData = {
+                studentId: document.getElementById('studentId').value,
+                gender: document.getElementById('gender').value,
+                department: document.getElementById('department').value,
+                sections: []
+            };
+
+            sections.forEach((section, sectionIndex) => {
+                const sectionData = {
+                    title: section.title,
+                    questions: []
+                };
+
+                section.questions.forEach((question, questionIndex) => {
+                    const questionData = {
+                        question: question.question,
+                        criteria: []
+                    };
+
+                    question.criteria.forEach((criterion, criteriaIndex) => {
+                        const rating = document.querySelector(`input[name="rating_${sectionIndex}_${questionIndex}_${criteriaIndex}"]:checked`)?.value;
+                        questionData.criteria.push({
+                            label: criterion.label,
+                            rating: parseInt(rating)
+                        });
+                    });
+
+                    sectionData.questions.push(questionData);
+                });
+
+                formData.sections.push(sectionData);
+            });
+
+            return formData;
+        }
+
+
+
+        function calculateSectionScore(sectionData) {
+            let totalScore = 0;
+            let totalCriteria = 0;
+            
+            sectionData.questions.forEach(question => {
+                question.criteria.forEach(criterion => {
+                    if (criterion.rating) {
+                        totalScore += criterion.rating;
+                        totalCriteria++;
+                    }
+                });
+            });
+
+            return Math.round(totalScore / totalCriteria); // Round to whole number
+        }
+
+        function displayResults(formData) {
+            const resultsSection = document.getElementById('results');
+            const scoresDiv = document.getElementById('sectionScores');
+            scoresDiv.innerHTML = '';
+
+            formData.sections.forEach(section => {
+                const score = calculateSectionScore(section);
+                const resultItem = document.createElement('div');
+                resultItem.className = 'result-item';
+                resultItem.innerHTML = `
+                    <span class="result-label">${section.title}</span>
+                    <span class="result-value">${score}</span>
+                `;
+                scoresDiv.appendChild(resultItem);
+            });
+
+            // Show the results section
+            resultsSection.style.display = 'block';
+        }
+
+        // Update the form submit event listener
+        document.getElementById('evaluationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = collectFormData();
+            localStorage.setItem('evaluationData', JSON.stringify(formData));
+            displayResults(formData);
+        });
+
+        // Initialize form
+        renderForm();
+    </script>
+</body>
+</html>

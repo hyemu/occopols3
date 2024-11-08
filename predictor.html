@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="answer-styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <title>Employability Prediction</title>
+    <style>
+        /* Reset default margins and set up base structure */
+        html, body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        /* Content wrapper */
+        .content {
+            padding: 20px;
+        }
+
+        /* Main container for the form */
+        .main-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: calc(100vh - 100px);
+            padding: 20px;
+            box-sizing: border-box;
+            margin-top: 80px;
+        }
+
+        /* Form container */
+        .form-container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        /* Input styling */
+        .form-container input, .form-container select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        /* Button styling */
+        .form-container button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .form-container button:hover {
+            background-color: #45a049;
+        }
+
+        /* Results section */
+        .results {
+            margin-top: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+            display: none; /* Initially hide results */
+        }
+
+        .results p {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* Prediction text and icon */
+        .prediction-text {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .prediction-text .icon {
+            font-size: 40px;
+            margin-right: 10px;
+        }
+
+        .prediction-text h4 {
+            font-weight: bold;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <img src="banner.png" alt="Logo"> 
+        <button class="neon-button" onclick="window.location.href='index.html'">
+            <i class='bx bx-home'></i>
+            <span class="tooltip">Home</span>
+        </button>
+        <button class="neon-button" onclick="window.location.href='evaluation.html'">
+            <i class='bx bx-clipboard'></i>
+            <span class="tooltip">Evaluation</span>
+        </button>
+        <button class="neon-button" onclick="window.location.href='predictor.html'">
+            <i class='bx bx-line-chart'></i>
+            <span class="tooltip">Prediction</span>
+        </button>
+        <button class="neon-button" onclick="window.location.href='data.html'">
+            <i class='bx bx-data'></i>
+            <span class="tooltip">Data</span>
+        </button>
+    </nav>
+    
+    
+    <div class="form-container">
+        <h2>Enter Your Details</h2>
+        <form id="predict-form">
+            <label for="student_id">Student ID (e.g., 2x-xxxxx):</label>
+            <input type="text" id="student_id" name="student_id" pattern="21-\d{5}" placeholder="2x-xxxxx" required>
+
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+
+            <label for="department">Department:</label>
+            <select id="department" name="department" required>
+                <option value="ccs">CCS</option>
+                <option value="con">CON</option>
+                <option value="cba">CBA</option>
+            </select>
+
+            <label for="general_appearance">General Appearance:</label>
+            <input type="number" id="general_appearance" name="general_appearance" min="1" max="5" required>
+
+            <label for="manner_of_speaking">Manner of Speaking:</label>
+            <input type="number" id="manner_of_speaking" name="manner_of_speaking" min="1" max="5" required>
+
+            <label for="physical_condition">Physical Condition:</label>
+            <input type="number" id="physical_condition" name="physical_condition" min="1" max="5" required>
+
+            <label for="mental_alertness">Mental Alertness:</label>
+            <input type="number" id="mental_alertness" name="mental_alertness" min="1" max="5" required>
+
+            <label for="self_confidence">Self Confidence:</label>
+            <input type="number" id="self_confidence" name="self_confidence" min="1" max="5" required>
+
+            <label for="ability_to_present_ideas">Ability to Present Ideas:</label>
+            <input type="number" id="ability_to_present_ideas" name="ability_to_present_ideas" min="1" max="5" required>
+
+            <label for="communication_skills">Communication Skills:</label>
+            <input type="number" id="communication_skills" name="communication_skills" min="1" max="5" required>
+
+            <label for="student_performance_rating">Student Performance Rating:</label>
+            <input type="number" id="student_performance_rating" name="student_performance_rating" min="1" max="5" required>
+
+            <button type="submit">Predict Employability</button>
+        </form>
+    </div>
+
+    <div class="results" id="results">
+        <h3>Prediction Results</h3>
+        <p id="prediction"></p>
+
+        <div class="prediction-text" id="prediction-text">
+            <!-- Dynamic prediction icon and text will be added here -->
+        </div>
+    </div>
+
+    <script>
+        async function predictEmployability(formData) {
+            try {
+                const response = await fetch(`${window.location.origin}/predict`, { 
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+
+                return await response.json();
+            } catch (error) {
+                throw new Error('Error predicting employability');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('predict-form');
+            const resultsElement = document.getElementById('results');
+            const predictionElement = document.getElementById('prediction');
+            const predictionText = document.getElementById('prediction-text');
+
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+
+                // Show results
+                resultsElement.style.display = 'block';
+
+                const formData = {
+                    student_id: document.getElementById('student_id').value,
+                    gender: document.getElementById('gender').value,
+                    department: document.getElementById('department').value,
+                    general_appearance: parseInt(document.getElementById('general_appearance').value),
+                    manner_of_speaking: parseInt(document.getElementById('manner_of_speaking').value),
+                    physical_condition: parseInt(document.getElementById('physical_condition').value),
+                    mental_alertness: parseInt(document.getElementById('mental_alertness').value),
+                    self_confidence: parseInt(document.getElementById('self_confidence').value),
+                    ability_to_present_ideas: parseInt(document.getElementById('ability_to_present_ideas').value),
+                    communication_skills: parseInt(document.getElementById('communication_skills').value),
+                    student_performance_rating: parseInt(document.getElementById('student_performance_rating').value)
+                };
+
+                try {
+                    const result = await predictEmployability(formData);
+                    const isEmployable = result.prediction === 'Employable';
+
+                    // Update prediction text and icon
+                    predictionText.innerHTML = `
+                        <div class="icon" style="color: ${isEmployable ? '#00C853' : '#FF3D00'};">
+                            ${isEmployable ? '😊' : '😞'}
+                        </div>
+                        <h4 style="color: ${isEmployable ? '#00C853' : '#FF3D00'};">${result.prediction}</h4>
+                    `;
+                } catch (error) {
+                    predictionElement.innerHTML = `
+                        <span style="color: red;">Error: ${error.message}</span><br>
+                        Please try again or contact support if the problem persists.
+                    `;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

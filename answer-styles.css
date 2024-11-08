@@ -1,0 +1,417 @@
+
+:root {
+    --primary-color: #2563eb;
+    --secondary-color: #1e40af;
+    --background-color: #f3f4f6;
+    --text-color: #1f2937;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+    background: var(--background-color);
+    color: var(--text-color);
+    padding: 0; /* Remove padding to make space for the fixed container */
+    margin: 0; /* Remove margin to prevent any overflow */
+}
+
+
+
+/* Optional: Add some space at the bottom of the body to prevent overlap */
+body {
+    padding-bottom: 50px;
+}
+
+.container {
+    position: fixed;
+    bottom: 100px; /* Adjust the distance from the bottom */
+    left: 50%;
+    transform: translateX(-50%); /* Center the container horizontally */
+    max-width: 900px; /* Fixed width */
+    width: 100%; /* Allow responsive resizing */
+    height: 500px; /* Fixed height */
+    overflow-y: auto; /* Allow vertical scrolling */
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional box shadow */
+    z-index: 1000; /* Ensure it's on top of other content */
+}
+
+.header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.student-info {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: #f8fafc;
+    border-radius: 4px;
+}
+
+.input-group {
+    margin-bottom: 1rem;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.input-group input, .input-group select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+}
+
+.section {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: #f8fafc;
+    border-radius: 4px;
+}
+
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.question {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+}
+
+.question-text {
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+
+.criteria {
+    margin-bottom: 1rem;
+}
+
+.criteria-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    background: #f1f5f9;
+    border-radius: 4px;
+}
+
+.criteria-label {
+    flex: 1;
+    margin-right: 1rem;
+}
+
+.rating-group {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.rating-option {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.3s ease;
+}
+
+.btn:hover {
+    background: var(--secondary-color);
+}
+
+.legend {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: #f1f5f9;
+    border-radius: 4px;
+}
+
+.legend-title {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.legend-item {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+.results-section {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: none; /* Hidden by default */
+}
+
+.results-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.result-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: #f8fafc;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+}
+
+.result-label {
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.result-value {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    padding: 0.5rem 1rem;
+    background: #f1f5f9;
+    border-radius: 4px;
+}
+
+.employability-result {
+    margin-top: 2rem;
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: #f5f5f5;
+}
+
+.prediction-text {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 1rem 0;
+}
+
+.prediction-text.employable {
+    color: #28a745;
+}
+
+.prediction-text.less-employable {
+    color: #dc3545;
+}
+
+.probability-text {
+    font-size: 1rem;
+    color: #666;
+}
+
+/* Add these styles to your answer-styles.css file */
+
+#prediction-result {
+    margin-top: 2rem;
+    padding: 1rem;
+}
+
+.prediction-box {
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.prediction-box h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.prediction-text {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin: 1rem 0;
+}
+
+.prediction-details {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 1rem;
+}
+
+.employable {
+    background-color: #e7f5e7;
+    border: 2px solid #4caf50;
+}
+
+.employable .prediction-text {
+    color: #2e7d32;
+}
+
+.less-employable {
+    background-color: #fff3e0;
+    border: 2px solid #ff9800;
+}
+
+.less-employable .prediction-text {
+    color: #ef6c00;
+}
+
+.result-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.result-label {
+    font-weight: 500;
+    color: #444;
+}
+
+.result-value {
+    font-weight: bold;
+    color: #2196f3;
+}
+
+/* NAVBAR */
+
+
+
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #020617;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden; /* Prevent horizontal overflow */
+    position: relative;
+    padding-top: 60px; /* Adds space for the navbar so content doesn't hide under it */
+}
+
+.nav-bar {
+    display: flex;
+    gap: 20px;
+    padding: 10px 40px; /* Adjust padding for height */
+    background-color: #041b36;
+    border-radius: 50px;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+    position: fixed; /* Fix the navbar at the top */
+    top: 30px; /* Keep it at the very top */
+    left: 50%; /* Center it horizontally */
+    transform: translateX(-50%); /* Adjust for perfect centering */
+    z-index: 1000; /* Ensure it stays on top of other content */
+    width: auto; /* Adjust navbar width to fit content */
+    overflow: hidden; /* Hide the overflow for the blur effect */
+}
+
+.nav-bar::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(to left, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.6)); /* Gradient effect */
+    filter: blur(5px); /* Blur the right side */
+    z-index: -1; /* Ensure it stays behind the navbar */
+}
+
+.neon-button {
+    position: relative;
+    width: 100px;
+    height: 60px;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 30px;
+    color: #fff;
+    background-color: #020617;
+    border: 2px solid #0ff;
+    cursor: pointer;
+    overflow: hidden;
+    transition: border-color 0.8s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.neon-button:hover {
+    border-color: transparent;
+    box-shadow: 0 0 15px #0ff, 0 0 30px #0ff, 0 0 45px #0ff;
+}
+
+/* Tooltip text style */
+.tooltip {
+    position: absolute;
+    bottom: -35px; /* Position the tooltip below the button */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    opacity: 0; /* Initially hidden */
+    visibility: hidden; /* Initially hidden */
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 999; /* Ensure the tooltip appears above other content */
+}
+
+/* Show the tooltip on hover */
+.neon-button:hover .tooltip {
+    opacity: 4;
+    visibility: visible;
+}
+
+.drop {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgba(0, 255, 255, 0.8);
+    animation: drop 5s forwards;
+    pointer-events: none;
+}
+
+@keyframes drop {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100vh);
+        opacity: 0;
+    }
+}
+.nav-bar img {
+    width: 190px; /* Adjust size as needed */
+    height: 40px;
+    margin-top: 10px;
+    margin-right: 10px; /* Optional spacing from buttons */
+}
