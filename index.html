@@ -3,254 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Evaluation Form</title>
-    <link rel="stylesheet" href="answer-styles.css">
-    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <title>OccuPulse - Your path to employability excellence</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Optional: If you want to use the same font as original -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
 </head>
 <body>
-    <nav class="nav-bar">
-        <img src="banner.png" alt="Logo"> 
-        <button class="neon-button" onclick="window.location.href='index.html'">
-            <i class='bx bx-home'></i>
-            <span class="tooltip">Home</span>
-        </button>
-        <button class="neon-button" onclick="window.location.href='evaluation.html'">
-            <i class='bx bx-clipboard'></i>
-            <span class="tooltip">Evaluation</span>
-        </button>
-        <button class="neon-button" onclick="window.location.href='predictor.html'">
-            <i class='bx bx-line-chart'></i>
-            <span class="tooltip">Prediction</span>
-        </button>
-        <button class="neon-button" onclick="window.location.href='data.html'">
-            <i class='bx bx-data'></i>
-            <span class="tooltip">Data</span>
-        </button>
+    <!-- Navbar -->
+    <nav class="sticky top-0 bg-[rgb(13,5,35)] py-4">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center">
+                <a href="/" class="text-white">
+                    <img width="177" height="45" alt="company logo" src="https://d1pnnwteuly8z3.cloudfront.net/images/28ac3e86-6501-49f4-a257-812512415a85/5672d959-e65e-432f-b4d9-f1a17ea8d92f.png" class="w-auto h-[45px]" loading="lazy" />
+                </a>
+                
+                <!-- Mobile menu button -->
+                <button class="lg:hidden text-white" id="mobile-menu-button">
+                    <div class="w-6 h-5 flex flex-col justify-between">
+                        <span class="block h-0.5 w-6 rounded-full bg-white"></span>
+                        <span class="block h-0.5 w-6 rounded-full bg-white"></span>
+                        <span class="block h-0.5 w-6 rounded-full bg-white"></span>
+                    </div>
+                </button>
+
+                <!-- Navigation links -->
+                <div class="hidden lg:flex items-center space-x-8">
+                    <a href="#" class="text-white font-semibold">🧑‍💻 v2 Repository</a>
+                    <a href="#" class="px-6 py-2 bg-[rgb(106,27,154)] text-[#d4cfcf] font-semibold rounded hover:bg-opacity-90 transition-colors">Evaluate Now! ➔</a>
+                </div>
+            </div>
+        </div>
     </nav>
-    
-     
-    <div class="container">
-        <div class="header">
-            <h1>Student Evaluation Form</h1>
-        </div>
 
-        <form id="evaluationForm">
-            <div class="student-info">
-                <div class="input-group">
-                    <label for="studentId">Student ID:</label>
-                    <input type="text" id="studentId" required>
+    <!-- Hero Section -->
+    <section class="py-1">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2">
+                    <h1 class="text-5xl font-black tracking-tight mb-8">Your path to employability excellence 💼</h1>
+                    <p class="text-xl mb-8">Empowering your future and navigating through opportunities. Let's get you ready-employed 🤝</p>
+                    <div class="flex flex-col md:flex-row gap-3">
+                        <a href="#" class="px-8 py-4 bg-black text-white rounded-lg text-center hover:bg-gray-800 transition-colors">🚀 Let's go!</a>
+                    </div>
                 </div>
-                <div class="input-group">
-                    <label for="gender">Gender:</label>
-                    <select id="gender" required>
-                        <option value="">Select gender</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="other">Other</option>
-                    </select>
+                <div class="lg:w-1/2 mt-8 lg:mt-0">
+                    <img src="https://d1pnnwteuly8z3.cloudfront.net/images/28ac3e86-6501-49f4-a257-812512415a85/f6c906af-3da5-4936-aef6-87ecd19af50d.png" alt="product" class="mx-auto lg:mr-0 lg:pr-6 drop-shadow-lg" />
                 </div>
-                <div class="input-group">
-                  <select id="department" required>
-                    <option value="">Select department</option>
-                    <option value="CCS">College of Computer Studies</option>
-                    <option value="CON">College of Nursing</option>
-                    <option value="CBA">College of Business Administration</option>
-                    <option value="CAS">College of Arts and Sciences</option>
-                    <option value="COE">College of Engineering</option>
-                    <option value="CED">College of Education</option>
-                    <option value="COL">College of Law</option>
-                    <option value="COM">College of Medicine</option>
-                </select>
             </div>
         </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-20">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <p class="font-semibold mb-2 uppercase text-xl">hmmm?🤔💭</p>
+                <h2 class="text-4xl font-semibold">
+                    With OccuPulse, 
+                    <span class="bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">You can...</span>
+                </h2>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Feature 1 -->
+                <div class="p-6 rounded">
+                    <div class="h-1 mb-12 bg-gradient-to-r from-purple-600 to-blue-500"></div>
+                    <h3 class="text-xl font-semibold mb-2">Employability Evaluation Form</h3>
+                    <p class="text-gray-600">The form is ready and already waiting for you! Just answer it honestly though.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="p-6 rounded">
+                    <div class="h-1 mb-12 bg-gradient-to-r from-purple-600 to-blue-500"></div>
+                    <h3 class="text-xl font-semibold mb-2">Predictive Analysis</h3>
+                    <p class="text-gray-600">After the evaluation, you can see your standing and the understanding of the algorithm based on your scores</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="p-6 rounded">
+                    <div class="h-1 mb-12 bg-gradient-to-r from-purple-600 to-blue-500"></div>
+                    <h3 class="text-xl font-semibold mb-2">Feedback straight from the industry</h3>
+                    <p class="text-gray-600">Get industry-standards feedback, words from an HR Professional!</p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="p-6 rounded">
+                    <div class="h-1 mb-12 bg-gradient-to-r from-purple-600 to-blue-500"></div>
+                    <h3 class="text-xl font-semibold mb-2">Holistic Data</h3>
+                    <p class="text-gray-600">See the real-time data for those nerds that needs data... did somebody says data? data? We got you!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="py-28 relative z-10">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-semibold text-center mb-12">🥸 How It Works</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                <!-- Step 1 -->
+                <div class="text-center relative">
+                    <div class="hidden md:block absolute h-0.5 w-full bg-black top-[20px] -z-10"></div>
+                    <div class="bg-purple-600 rounded-full h-10 w-10 flex items-center justify-center text-white font-semibold mx-auto">1</div>
+                    <h5 class="font-semibold mt-3 mb-3">📜 Evaluate Yourself</h5>
+                    <p class="text-gray-600">Use the Employability Evaluation Form to answer situational question and rate yourself 1-5 based on what you are really capable of.</p>
+                </div>
+                
+
+                <!-- Step 2 -->
+                <div class="text-center relative">
+                    <div class="hidden md:block absolute h-0.5 w-full bg-black top-[20px] -z-10"></div>
+                    <div class="bg-purple-600 rounded-full h-10 w-10 flex items-center justify-center text-white font-semibold mx-auto">2</div>
+                    <h5 class="font-semibold mt-3 mb-3">🚀 Input Score to the Predictor</h5>
+                    <p class="text-gray-600">With OccuPulse's advanced KNN-powered algorithm, you can see the results of how you performed and a comprehensive feedback!</p>
+                </div>
 
 
-            <div class="legend">
-                <div class="legend-title">Rating Scale</div>
-                <div class="legend-item"><strong>1:</strong> Needs Improvement</div>
-                <div class="legend-item"><strong>2:</strong> Below Average</div>
-                <div class="legend-item"><strong>3:</strong> Average</div>
-                <div class="legend-item"><strong>4:</strong> Above Average</div>
-                <div class="legend-item"><strong>5:</strong> Excellent</div>
+                <!-- Step 3 -->
+                <div class="text-center relative">
+                    <div class="hidden md:block absolute h-0.5 w-full bg-black top-[20px] -z-10"></div>
+                    <div class="bg-purple-600 rounded-full h-10 w-10 flex items-center justify-center text-white font-semibold mx-auto">3</div>
+                    <h5 class="font-semibold mt-3 mb-3">📊 See Data Analysis</h5>
+                    <p class="text-gray-600">Wanna see some data? Say less to! Head over to this section to have a view and understanding of the overall system's progress.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="pt-12 pb-28">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <div class="bg-purple-600 h-1 w-[50px] mx-auto mb-6 rounded-full"></div>
+                <h2 class="text-4xl font-black tracking-tight">😎 Meet the Team!</h2>
             </div>
 
-            <div id="sections"></div>
+            <div class="flex flex-wrap justify-center gap-8">
+                <!-- Team Member 1 -->
+                <div class="w-6/12 sm:w-3/12 lg:w-2/12 text-center">
+                    <div class="w-[100px] h-[100px] rounded-full overflow-hidden mx-auto">
+                        <img src="https://templates.versoly.com/assets/img/headshot-woman-3.jpg" alt="Gabriel Ventura" class="w-full h-full object-cover" />
+                    </div>
+                    <h5 class="font-semibold mt-2 mb-0">Gabriel Ventura</h5>
+                    <p class="font-semibold text-sm text-gray-600">Lead Developer</p>
+                </div>
 
-            <button type="submit" class="btn">Submit Evaluation</button>
-        </form>
+                <!-- Team Member 2 -->
+                <div class="w-6/12 sm:w-3/12 lg:w-2/12 text-center">
+                    <div class="w-[100px] h-[100px] rounded-full overflow-hidden mx-auto">
+                        <img src="https://templates.versoly.com/assets/img/headshot-man-5.jpg" alt="Raven Drake Cruz" class="w-full h-full object-cover" />
+                    </div>
+                    <h5 class="font-semibold mt-2 mb-0">Raven Drake Cruz</h5>
+                    <p class="font-semibold text-sm text-gray-600">Researcher</p>
+                </div>
 
-      <!-- Add the results section -->
-      <div class="results-section" id="results">
-        <h2 class="results-title">Evaluation Results</h2>
-        <div id="sectionScores"></div>
-    </div>
-</div>
-    </div>
+                <!-- Team Member 3 -->
+                <div class="w-6/12 sm:w-3/12 lg:w-2/12 text-center">
+                    <div class="w-[100px] h-[100px] rounded-full overflow-hidden mx-auto">
+                        <img src="https://templates.versoly.com/assets/img/headshot-man-6.jpg" alt="Joshua Ezekiel Perez" class="w-full h-full object-cover" />
+                    </div>
+                    <h5 class="font-semibold mt-2 mb-0">Joshua Ezekiel Perez</h5>
+                    <p class="font-semibold text-sm text-gray-600">External Resources Coordinator</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <!-- Link to questions.js -->
-    <script src="questions.js"></script>
-    <!-- Call questions() to display questions -->
-    <script>questions();</script>
+    <!-- Footer -->
+    <footer class="py-6">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-600">© 2024 OccuPulse Technologies. All rights reserved.</p>
+                <div class="flex gap-4 mt-4 md:mt-0">
+
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Menu Script -->
     <script>
-
-
-        function createRatingGroup(sectionIndex, questionIndex, criteriaIndex) {
-            const group = document.createElement('div');
-            group.className = 'rating-group';
-            
-            for (let i = 1; i <= 5; i++) {
-                const option = document.createElement('div');
-                option.className = 'rating-option';
-                
-                const input = document.createElement('input');
-                input.type = 'radio';
-                input.name = `rating_${sectionIndex}_${questionIndex}_${criteriaIndex}`;
-                input.value = i;
-                input.id = `rating_${sectionIndex}_${questionIndex}_${criteriaIndex}_${i}`;
-                input.required = true;
-                
-                const label = document.createElement('label');
-                label.htmlFor = input.id;
-                label.textContent = i;
-                
-                option.appendChild(input);
-                option.appendChild(label);
-                group.appendChild(option);
-            }
-            
-            return group;
-        }
-
-        function renderForm() {
-            const sectionsContainer = document.getElementById('sections');
-            
-            sections.forEach((section, sectionIndex) => {
-                const sectionDiv = document.createElement('div');
-                sectionDiv.className = 'section';
-                
-                const title = document.createElement('h2');
-                title.className = 'section-title';
-                title.textContent = section.title;
-                sectionDiv.appendChild(title);
-                
-                section.questions.forEach((questionData, questionIndex) => {
-                    const questionDiv = document.createElement('div');
-                    questionDiv.className = 'question';
-                    
-                    const questionText = document.createElement('div');
-                    questionText.className = 'question-text';
-                    questionText.textContent = questionData.question;
-                    questionDiv.appendChild(questionText);
-                    
-                    const criteriaDiv = document.createElement('div');
-                    criteriaDiv.className = 'criteria';
-                    
-                    questionData.criteria.forEach((criterion, criteriaIndex) => {
-                        const criteriaItem = document.createElement('div');
-                        criteriaItem.className = 'criteria-item';
-                        
-                        const criteriaLabel = document.createElement('div');
-                        criteriaLabel.className = 'criteria-label';
-                        criteriaLabel.textContent = criterion.label;
-                        
-                        criteriaItem.appendChild(criteriaLabel);
-                        criteriaItem.appendChild(createRatingGroup(sectionIndex, questionIndex, criteriaIndex));
-                        criteriaDiv.appendChild(criteriaItem);
-                    });
-                    
-                    questionDiv.appendChild(criteriaDiv);
-                    sectionDiv.appendChild(questionDiv);
-                });
-                
-                sectionsContainer.appendChild(sectionDiv);
-            });
-        }
-
-        function collectFormData() {
-            const formData = {
-                studentId: document.getElementById('studentId').value,
-                gender: document.getElementById('gender').value,
-                department: document.getElementById('department').value,
-                sections: []
-            };
-
-            sections.forEach((section, sectionIndex) => {
-                const sectionData = {
-                    title: section.title,
-                    questions: []
-                };
-
-                section.questions.forEach((question, questionIndex) => {
-                    const questionData = {
-                        question: question.question,
-                        criteria: []
-                    };
-
-                    question.criteria.forEach((criterion, criteriaIndex) => {
-                        const rating = document.querySelector(`input[name="rating_${sectionIndex}_${questionIndex}_${criteriaIndex}"]:checked`)?.value;
-                        questionData.criteria.push({
-                            label: criterion.label,
-                            rating: parseInt(rating)
-                        });
-                    });
-
-                    sectionData.questions.push(questionData);
-                });
-
-                formData.sections.push(sectionData);
-            });
-
-            return formData;
-        }
-
-
-
-        function calculateSectionScore(sectionData) {
-            let totalScore = 0;
-            let totalCriteria = 0;
-            
-            sectionData.questions.forEach(question => {
-                question.criteria.forEach(criterion => {
-                    if (criterion.rating) {
-                        totalScore += criterion.rating;
-                        totalCriteria++;
-                    }
-                });
-            });
-
-            return Math.round(totalScore / totalCriteria); // Round to whole number
-        }
-
-        function displayResults(formData) {
-            const resultsSection = document.getElementById('results');
-            const scoresDiv = document.getElementById('sectionScores');
-            scoresDiv.innerHTML = '';
-
-            formData.sections.forEach(section => {
-                const score = calculateSectionScore(section);
-                const resultItem = document.createElement('div');
-                resultItem.className = 'result-item';
-                resultItem.innerHTML = `
-                    <span class="result-label">${section.title}</span>
-                    <span class="result-value">${score}</span>
-                `;
-                scoresDiv.appendChild(resultItem);
-            });
-
-            // Show the results section
-            resultsSection.style.display = 'block';
-        }
-
-        // Update the form submit event listener
-        document.getElementById('evaluationForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const formData = collectFormData();
-            localStorage.setItem('evaluationData', JSON.stringify(formData));
-            displayResults(formData);
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const nav = document.querySelector('nav');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            nav.classList.toggle('mobile-menu-open');
+            // Add your mobile menu toggle logic here
         });
-
-        // Initialize form
-        renderForm();
     </script>
 </body>
 </html>
