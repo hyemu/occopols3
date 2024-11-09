@@ -29,7 +29,9 @@ body {
 }
 
 .container {
-    position: fixed;
+    margin-bottom: 45%;
+    position: absolute;
+    margin-left: 40%;
     bottom: 100px; /* Adjust the distance from the bottom */
     left: 50%;
     transform: translateX(-50%); /* Center the container horizontally */
