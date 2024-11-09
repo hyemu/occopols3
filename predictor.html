@@ -162,6 +162,23 @@
         font-weight: bold;
         font-size: 24px;
     }
+    .feedback-table {
+        width: 100%;
+        font-size: 14px;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    .feedback-table th, .feedback-table td {
+        padding: 8px;
+        text-align: left;
+        color: #ffffff;
+        border: 1px solid rgba(255, 255, 255, 0.3); /* Border for table cells */
+    }
+
+    .feedback-table th {
+        background-color: rgba(255, 255, 255, 0.2); /* Slightly different background for headers */
+    }
     </style>
 </head>
 
@@ -263,6 +280,71 @@ const response = await fetch(`https://knnpulse-production.up.railway.app/predict
             }
         }
 
+        const comments = {
+        'GENERAL APPEARANCE': {
+            low: "Your presentation was not aligned with professional standards. Consider investing in business attire and maintaining a well-groomed appearance.",
+            medium: "You presented yourself professionally, though there's room for improvement in personal grooming and attire to match industry standards.",
+            high: "Your appearance was impeccable and well-suited to a professional setting. Continue maintaining this high standard."
+        },
+        'MANNER OF SPEAKING': {
+            low: "Your manner of speaking was unclear and lacked confidence. Focus on improving clarity and practicing your speaking skills.",
+            medium: "You spoke clearly with a confident tone, though enhancing your engagement and articulation could further improve your delivery.",
+            high: "Your speaking manner was articulate and engaging, showcasing excellent communication skills."
+        },
+        'PHYSICAL CONDITION': {
+        low: "Your physical appearance suggested a lack of attention to health. Consider regular exercise and a healthy diet to improve your energy levels.",
+        medium: "You appeared generally healthy and energetic, but maintaining consistent wellness practices could enhance your performance.",
+        high: "You exhibited outstanding physical vitality and health, reflecting well on your overall fitness and energy levels."
+      },
+      'MENTAL ALERTNESS': {
+        low: "Improve your mental alertness through activities that stimulate cognitive functions, such as puzzles or brain exercises.",
+        medium: "You demonstrated good mental alertness with occasional lapses. Engaging in more mindfulness practices could help improve focus.",
+        high: "Your mental alertness was exceptional, showcasing quick thinking and strong problem-solving abilities."
+      },
+      'SELF-CONFIDENCE': {
+        low: "Work on building your self-confidence through positive self-talk and preparation. Consider practice sessions to improve your presentation.",
+        medium: "You displayed a solid level of self-confidence. Continue developing your self-assurance through more experience and feedback.",
+        high: "Your self-confidence was outstanding, with a strong presence and poise that positively impacted your performance."
+      },
+      'ABILITY TO PRESENT IDEAS': {
+        low: "Your presentation of ideas was unclear and disorganized. Practice structuring your thoughts and using visual aids to improve clarity.",
+        medium: "You presented your ideas effectively but could benefit from refining your organization and clarity for even greater impact.",
+        high: "You demonstrated an excellent ability to present ideas, with clear and compelling communication that effectively conveyed your message."
+      },
+      'COMMUNICATION SKILLS': {
+        low: "Your communication skills need improvement. Work on active listening and clear, concise messaging to enhance your interactions.",
+        medium: "Your communication was generally effective, though focusing on enhancing clarity and engagement can make your interactions even better.",
+        high: "Your communication skills were exceptional, with clear, effective, and engaging interactions that greatly contributed to the discussion."
+      },
+      'Student Performance Rating': {
+        low: "Your performance needs improvement. Consider focusing on key areas of study and seeking additional help to boost your grades.",
+        medium: "You have performed well academically, but there is room to enhance your performance by focusing on areas where you can further excel.",
+        high: "Your academic performance is exemplary, reflecting a high level of understanding and achievement in your studies."
+      }
+    };
+
+    const getFeedbackLevel = (score) => {
+        if (score <= 2) return 'low';
+        if (score <= 4) return 'medium';
+        return 'high';
+    };
+
+    const generateFeedback = (formData) => {
+        const feedback = {};
+
+        feedback['GENERAL APPEARANCE'] = comments['GENERAL APPEARANCE'][getFeedbackLevel(formData.general_appearance)];
+        feedback['MANNER OF SPEAKING'] = comments['MANNER OF SPEAKING'][getFeedbackLevel(formData.manner_of_speaking)];
+        feedback['PHYSICAL CONDITION'] = comments['PHYSICAL CONDITION'][getFeedbackLevel(formData.physical_condition)];
+        feedback['MENTAL ALERTNESS'] = comments['MENTAL ALERTNESS'][getFeedbackLevel(formData.mental_alertness)];
+        feedback['SELF-CONFIDENCE'] = comments['SELF-CONFIDENCE'][getFeedbackLevel(formData.self_confidence)];
+        feedback['ABILITY TO PRESENT IDEAS'] = comments['ABILITY TO PRESENT IDEAS'][getFeedbackLevel(formData.ability_to_present_ideas)];
+        feedback['COMMUNICATION SKILLS'] = comments['COMMUNICATION SKILLS'][getFeedbackLevel(formData.communication_skills)];
+        feedback['STUDENT PERFORMANCE RATING'] = comments['Student Performance Rating'][getFeedbackLevel(formData.student_performance_rating)];
+
+
+        return feedback;
+    };
+
         document.addEventListener('DOMContentLoaded', () => {
             const form = document.getElementById('predict-form');
             const resultsElement = document.getElementById('results');
@@ -300,6 +382,33 @@ const response = await fetch(`https://knnpulse-production.up.railway.app/predict
                         </div>
                         <h4 style="color: ${isEmployable ? '#00C853' : '#FF3D00'};">${result.prediction}</h4>
                     `;
+        // Generate and display feedback in a table format
+        const feedback = generateFeedback(formData);
+            const feedbackTableHTML = `
+                <table class="feedback-table">
+                    <tr>
+                        <th>Category</th>
+                        <th>Feedback</th>
+                    </tr>
+                    ${Object.entries(feedback).map(
+                        ([category, message]) => `
+                        <tr>
+                            <td>${category}</td>
+                            <td>${message}</td>
+                        </tr>`
+                    ).join('')}
+                </table>
+            `;
+
+            predictionElement.innerHTML = feedbackTableHTML;
+
+                        // Add Print/Save Results Button
+            predictionElement.innerHTML += `
+                <button id="printButton" style="margin-top: 20px; padding: 10px 20px; font-size: 16px; cursor: pointer;">
+                    Print/Save Results
+                </button>
+            `;
+
                 } catch (error) {
                     predictionElement.innerHTML = `
                         <span style="color: red;">Error: ${error.message}</span><br>
@@ -308,6 +417,62 @@ const response = await fetch(`https://knnpulse-production.up.railway.app/predict
                 }
             });
         });
+        document.addEventListener("click", (event) => {
+    if (event.target && event.target.id === "printButton") {
+        const resultsContent = document.getElementById("results").innerHTML;
+        printOrSaveResults(resultsContent);
+    }
+});
+
+function printOrSaveResults(content) {
+    // Create a new window and write the results content to it for printing
+    const printWindow = window.open("", "_blank");
+    printWindow.document.open();
+    printWindow.document.write(`
+        <html>
+        <head>
+            <title>Employability Prediction Results</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    color: #333;
+                    margin: 20px;
+                    font-size: 14px;
+                }
+                h3 {
+                    font-size: 24px;
+                    color: #333;
+                    text-align: center;
+                }
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-top: 20px;
+                }
+                th, td {
+                    padding: 8px;
+                    border: 1px solid #ddd;
+                    text-align: left;
+                }
+                th {
+                    background-color: #f2f2f2;
+                }
+            </style>
+        </head>
+        <body>
+            <h3>Employability Prediction Results</h3>
+            ${content}
+            <br>
+            <p>Generated on: ${new Date().toLocaleString()}</p>
+        </body>
+        </html>
+    `);
+    printWindow.document.close();
+
+    // Print or save to PDF
+    printWindow.print();
+}
+
     </script>
 </body>
 
