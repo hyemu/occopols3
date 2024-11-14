@@ -29,7 +29,7 @@ body {
 }
 
 .container {
-    margin-bottom: 45%;
+    margin-bottom: 40%;
     position: absolute;
     margin-left: 40%;
     bottom: 100px; /* Adjust the distance from the bottom */
@@ -41,9 +41,8 @@ body {
     overflow-y: auto; /* Allow vertical scrolling */
     background: white;
     padding: 1.5rem;
-    border-radius: 12px; /* Rounded corners */
+    border-radius: 4px; /* Rounded corners */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional box shadow */
-    z-index: 1000; /* Ensure it's on top of other content */
 }
 
 .header {
