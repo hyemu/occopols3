@@ -7,8 +7,11 @@
     <link rel="stylesheet" href="answer-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/inter-ui/3.19.3/inter.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
+
 <body>
     <nav class="nav-bar">
         <img src="banner.png" alt="Logo"> 
@@ -26,9 +29,72 @@
         </button>
         <button class="neon-button" onclick="window.location.href='https://occuadmin.netlify.app/'">
             <i class='bx bx-data'></i>
-            <span class="tooltip">Admin</span>
+            <span class="tooltip">Data</span>
         </button>
     </nav>
+    <div id="popup" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50 opacity-0 pointer-events-none transition-all duration-500 pt-16"> <!-- Added pt-16 -->        <div class="bg-white shadow-lg rounded-lg p-8 max-w-2xl mx-auto transform scale-95 transition-transform duration-500 opacity-0" id="popupContent">
+            <h1 class="text-3xl font-semibold text-blue-600 mb-4 text-center">Evaluation Instructions</h1>
+            
+            <p class="text-gray-700 text-base mb-6 leading-relaxed">
+                Imagine this: You are in a job interview as the current interviewee. Your task is to honestly evaluate yourself in different scenarios and rate attributes based on how you would really respond. Remember, there is no correct or incorrect response; all responses reflect your current self-assessment and may even highlight areas for growth.
+            </p>
+            
+            <p class="text-gray-700 text-base mb-6 leading-relaxed">
+                This evaluation aims to gauge your readiness for potential employment by identifying your strengths and areas for improvement in alignment with industry standards. Please respond swiftly and accurately based on your immediate understanding and natural responses, considering your morals and ethics.
+            </p>
+            
+            <p class="text-gray-700 text-base mb-6 leading-relaxed">
+                Your responses are completely confidential and will be securely handled. We greatly appreciate your honesty and commitment to this assessment, which will benefit both your growth and our research. Take your time, answer each question sincerely, and good luck!
+            </p>
+    
+            <!-- Consent Checkbox -->
+            <div class="flex items-center mb-4">
+                <input type="checkbox" id="consentCheckbox" class="mr-2 leading-tight">
+                <label for="consentCheckbox" class="text-sm text-gray-700">I agree with the <a href="#" class="text-blue-500">Privacy Policy</a>.</label>
+            </div>
+    
+            <!-- Close Button (Initially Hidden) -->
+            <div class="flex justify-center">
+                <button id="closePopup" class="hidden px-6 py-3 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 focus:ring-4 focus:ring-blue-200 transition-all duration-200 transform hover:scale-105">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const popup = document.getElementById('popup');
+            const popupContent = document.getElementById('popupContent');
+            const closePopup = document.getElementById('closePopup');
+            const consentCheckbox = document.getElementById('consentCheckbox');
+        
+            // Show the popout after page load with a delay of 0.5s
+            setTimeout(() => {
+                popup.classList.remove('opacity-0', 'pointer-events-none');
+                popup.classList.add('opacity-100', 'pointer-events-auto');
+                popupContent.classList.remove('opacity-0', 'scale-95');
+                popupContent.classList.add('opacity-100', 'scale-100');
+            }, 500);
+        
+            // Show close button when the checkbox is checked
+            consentCheckbox.addEventListener('change', () => {
+                if (consentCheckbox.checked) {
+                    closePopup.classList.remove('hidden');
+                } else {
+                    closePopup.classList.add('hidden');
+                }
+            });
+        
+            // Close the popout when the 'close' button is clicked
+            closePopup.addEventListener('click', () => {
+                popup.classList.remove('opacity-100', 'pointer-events-auto');
+                popup.classList.add('opacity-0', 'pointer-events-none');
+                popupContent.classList.remove('opacity-100', 'scale-100');
+                popupContent.classList.add('opacity-0', 'scale-95');
+            });
+        });
+    </script>
     
      
     <div class="container mx-auto px-4 py-8 max-w-4xl">
@@ -44,6 +110,15 @@
                         <label class="block text-sm font-medium text-gray-700 mb-2" for="studentId">Student ID</label>
                         <input type="text" id="studentId" required
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200">
+                    </div>
+
+                    <div class="input-focus-effect">
+                        <label class="block text-sm font-medium text-gray-700 mb-2" for="year">Year</label>
+                        <select id="year" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200">
+                            <option value="">Select Year</option>
+                            <option value="4thYear">4th Year</option>
+                        </select>
                     </div>
                     
                     <div class="input-focus-effect">
@@ -66,7 +141,8 @@
                             <option value="CON">College of Nursing</option>
                             <option value="CBA">College of Business and Accountancy</option>
                             <option value="COE">College of Engineering</option>
-                            <option value="CED">College of Hospitality Management</option>
+                            <option value="CHM">College of Hospitality Management</option>
+                            <option value="COED">College of Education</option>
                         </select>
                     </div>
                 </div>
@@ -110,7 +186,15 @@
             <h2 class="text-2xl font-bold text-gray-800 mb-6">Evaluation Results</h2>
             <div id="sectionScores" class="space-y-4"></div>
         </div>
+
+        <button id="downloadPDFButton" 
+        class="w-full md:w-auto px-6 py-3 bg-green-500 text-white font-medium rounded-lg hover:bg-green-600 focus:ring-4 focus:ring-green-200 transition-all duration-200 transform hover:scale-105 mt-4">
+        Download Results
+    </button>
+    
     </div>
+
+    
     <!-- Link to questions.js -->
     <script src="questions.js"></script>
     <!-- Call questions() to display questions -->
@@ -246,32 +330,67 @@
         }
 
         function displayResults(formData) {
-            const resultsSection = document.getElementById('results');
-            const scoresDiv = document.getElementById('sectionScores');
-            scoresDiv.innerHTML = '';
+    const resultsSection = document.getElementById('results');
+    const scoresDiv = document.getElementById('sectionScores');
+    scoresDiv.innerHTML = '';
 
-            formData.sections.forEach(section => {
-                const score = calculateSectionScore(section);
-                const resultItem = document.createElement('div');
-                resultItem.className = 'result-item';
-                resultItem.innerHTML = `
-                    <span class="result-label">${section.title}</span>
-                    <span class="result-value">${score}</span>
-                `;
-                scoresDiv.appendChild(resultItem);
-            });
+    formData.sections.forEach(section => {
+        const score = calculateSectionScore(section);
+        const resultItem = document.createElement('div');
+        resultItem.className = 'result-item';
+        resultItem.innerHTML = `
+            <span class="result-label">${section.title}</span>
+            <span class="result-value">${score}</span>
+        `;
+        scoresDiv.appendChild(resultItem);
+    });
 
-            // Show the results section
-            resultsSection.style.display = 'block';
-        }
+    // Show the results section
+    resultsSection.style.display = 'block';
+}
 
-        // Update the form submit event listener
-        document.getElementById('evaluationForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const formData = collectFormData();
-            localStorage.setItem('evaluationData', JSON.stringify(formData));
-            displayResults(formData);
-        });
+// Function to generate PDF
+function generatePDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    const resultsSection = document.getElementById('results');
+    const scoresDiv = document.getElementById('sectionScores');
+    const resultsTitle = document.querySelector('#results h2').innerText;
+
+    let yOffset = 10;
+    doc.setFontSize(16);
+    doc.text(resultsTitle, 10, yOffset);
+
+    yOffset += 10;
+
+    // Loop through the results and add them to the PDF
+    Array.from(scoresDiv.children).forEach((item, index) => {
+        const label = item.querySelector('.result-label').innerText;
+        const value = item.querySelector('.result-value').innerText;
+
+        doc.setFontSize(12);
+        doc.text(`${label}: ${value}`, 10, yOffset);
+
+        yOffset += 10;
+    });
+
+    // Save the PDF
+    doc.save('evaluation-results.pdf');
+}
+
+// Update the form submit event listener
+document.getElementById('evaluationForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const formData = collectFormData();
+    localStorage.setItem('evaluationData', JSON.stringify(formData));
+    displayResults(formData);
+});
+
+// Add event listener for the PDF download button
+document.getElementById('downloadPDFButton').addEventListener('click', function () {
+    generatePDF();
+});
 
         // Initialize form
         renderForm();
