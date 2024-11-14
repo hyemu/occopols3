@@ -184,7 +184,7 @@
 
 <body>
     <nav class="nav-bar">
-        <img src="banner.png" alt="Logo">
+        <img src="banner.png" alt="Logo"> 
         <button class="neon-button" onclick="window.location.href='index.html'">
             <i class='bx bx-home'></i>
             <span class="tooltip">Home</span>
@@ -199,10 +199,9 @@
         </button>
         <button class="neon-button" onclick="window.location.href='https://occuadmin.netlify.app/'">
             <i class='bx bx-data'></i>
-            <span class="tooltip">Admin</span>
+            <span class="tooltip">Data</span>
         </button>
     </nav>
-
 
     <div class="form-container">
         <h1>🤖 Employability Predictor </h1>
@@ -210,18 +209,29 @@
             <label for="student_id">Student ID (e.g., 2x-xxxxx):</label>
             <input type="text" id="student_id" name="student_id" pattern="21-\d{5}" placeholder="2x-xxxxx" required>
 
+            <label for="year">Year:</label>
+            <select id="year" name="year" required>
+                <option value="4th Year">4th Year</option>
+
+            </select>
+
             <label for="gender">Gender:</label>
             <select id="gender" name="gender" required>
-                <option value="male">Male</option>
+                <option value="Male">Male</option>
                 <option value="female">Female</option>
-                <option value="other">Other</option>
+                <option value="Other">Other</option>
             </select>
 
             <label for="department">Department:</label>
             <select id="department" name="department" required>
-                <option value="ccs">CCS</option>
-                <option value="con">CON</option>
-                <option value="cba">CBA</option>
+                <option value="College of Computer Studies">College of Computer Studies</option>
+                <option value="College of Nursing">College of Nursing</option>
+                <option value="College of Engineering">College of Engineering</option>
+                <option value="College of Business and Accountancy">College of Business and Accountancy</option>
+                <option value="College of Hotel and Management">College of Hotel and Management</option>
+                <option value="College of Education">College of Education</option>
+
+
             </select>
 
             <label for="general_appearance">General Appearance:</label>
@@ -261,10 +271,30 @@
         </div>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
     <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBdjpUuv4SIeW6ZKgAf_OUqGBk2QNLs0W8",
+            authDomain: "plpdata.firebaseapp.com",
+            databaseURL: "https://plpdata-default-rtdb.firebaseio.com",
+            projectId: "plpdata",
+            storageBucket: "plpdata.firebasestorage.app",
+            messagingSenderId: "157875332363",
+            appId: "1:157875332363:web:61d81bd58116e0234a2e0e",
+            measurementId: "G-XRLKN252WN"
+        };
+
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
         async function predictEmployability(formData) {
             try {
-const response = await fetch(`https://knnpulse-production.up.railway.app/predict`, { 
+                const response = await fetch(`https://knnpulse-production.up.railway.app/predict`, { 
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)
@@ -279,6 +309,78 @@ const response = await fetch(`https://knnpulse-production.up.railway.app/predict
                 throw new Error('Error predicting employability');
             }
         }
+
+        // Function to save data to Firebase
+// Function to save data to Firebase with prediction result
+async function saveToFirebase(formData, predictionResult) {
+    try {
+        // Get current number of entries
+        const snapshot = await database.ref('/').once('value');
+        const currentData = snapshot.val() || {};
+        const nextNodeNumber = Object.keys(currentData).length;
+
+        // Format the data according to your structure
+        const formattedData = {
+    DEPARTMENT: formData.department,
+    Employability: predictionResult,  // This will be "Employable" or "Not Employable"
+    GENDER: formData.gender,
+    GENERAL_APPEARANCE: formData.general_appearance.toString(),
+    MANNER_OF_SPEAKING: formData.manner_of_speaking.toString(),
+    ABILITY_TO_PRESENT_IDEAS: formData.ability_to_present_ideas.toString(),
+    MENTAL_ALERTNESS: formData.mental_alertness.toString(),
+    COMMUNICATION_SKILLS: formData.communication_skills.toString(),
+    PHYSICAL_CONDITION: formData.physical_condition.toString(),
+    SELF_CONFIDENCE: formData.self_confidence.toString(),
+    STUDENT_PERFORMANCE_RATING: formData.student_performance_rating.toString(),
+    STUDENT_ID: formData.student_id,
+    YEAR: "4th Year"
+};
+
+// Function to replace underscores with spaces in object keys
+const formatKeysWithSpaces = (data) => {
+    const formattedObj = {};
+    for (const key in data) {
+        const newKey = key.replace(/_/g, ' '); // Replace underscores with spaces
+        formattedObj[newKey] = data[key]; // Assign the value to the new key
+    }
+    return formattedObj;
+};
+
+// Apply the formatting function
+const formattedDataWithSpaces = formatKeysWithSpaces(formattedData);
+
+
+
+        console.log("Saving to Firebase:", formattedDataWithSpaces); // Debug log
+
+        const studentId = formattedDataWithSpaces["STUDENT ID"];
+    
+    // Create a reference to the root of the database
+    const studentRef = firebase.database().ref();
+    
+    // Query the database to find if the student ID already exists
+    const query = studentRef.orderByChild('STUDENT ID').equalTo(studentId);
+    
+    // Get the snapshot of the query
+    query.once('value', async function(snapshot) {
+        if (snapshot.exists()) {
+            // If the student ID exists, update the existing student data
+            const existingNodeKey = Object.keys(snapshot.val())[0]; // Get the node key of the existing student
+            await studentRef.child(existingNodeKey).update(formattedDataWithSpaces);
+            console.log("Successfully updated existing student data in Firebase with ID:", studentId); // Debug log
+        } else {
+            // If the student ID doesn't exist, create a new node
+            await studentRef.push(formattedDataWithSpaces); // Push to create a new node
+            console.log("Successfully saved new student data to Firebase."); // Debug log
+        }
+    });
+
+} catch (error) {
+    console.error("Firebase save error:", error); // Debug log
+    throw new Error('Error saving to Firebase: ' + error.message);
+}
+}
+
 
         const comments = {
         'GENERAL APPEARANCE': {
@@ -345,45 +447,61 @@ const response = await fetch(`https://knnpulse-production.up.railway.app/predict
         return feedback;
     };
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const form = document.getElementById('predict-form');
-            const resultsElement = document.getElementById('results');
-            const predictionElement = document.getElementById('prediction');
-            const predictionText = document.getElementById('prediction-text');
+ // Update the form submit event listener
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('predict-form');
+    const resultsElement = document.getElementById('results');
+    const predictionElement = document.getElementById('prediction');
+    const predictionText = document.getElementById('prediction-text');
 
-            form.addEventListener('submit', async (event) => {
-                event.preventDefault();
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault(); // Prevent form from submitting normally
 
-                // Show results
-                resultsElement.style.display = 'block';
+        // Show results
+        resultsElement.style.display = 'block';
 
-                const formData = {
-                    student_id: document.getElementById('student_id').value,
-                    gender: document.getElementById('gender').value,
-                    department: document.getElementById('department').value,
-                    general_appearance: parseInt(document.getElementById('general_appearance').value),
-                    manner_of_speaking: parseInt(document.getElementById('manner_of_speaking').value),
-                    physical_condition: parseInt(document.getElementById('physical_condition').value),
-                    mental_alertness: parseInt(document.getElementById('mental_alertness').value),
-                    self_confidence: parseInt(document.getElementById('self_confidence').value),
-                    ability_to_present_ideas: parseInt(document.getElementById('ability_to_present_ideas').value),
-                    communication_skills: parseInt(document.getElementById('communication_skills').value),
-                    student_performance_rating: parseInt(document.getElementById('student_performance_rating').value)
-                };
+        const formData = {
+            student_id: document.getElementById('student_id').value,
+            gender: document.getElementById('gender').value,
+            department: document.getElementById('department').value,
+            general_appearance: parseInt(document.getElementById('general_appearance').value),
+            manner_of_speaking: parseInt(document.getElementById('manner_of_speaking').value),
+            physical_condition: parseInt(document.getElementById('physical_condition').value),
+            mental_alertness: parseInt(document.getElementById('mental_alertness').value),
+            self_confidence: parseInt(document.getElementById('self_confidence').value),
+            ability_to_present_ideas: parseInt(document.getElementById('ability_to_present_ideas').value),
+            communication_skills: parseInt(document.getElementById('communication_skills').value),
+            student_performance_rating: parseInt(document.getElementById('student_performance_rating').value)
+        };
 
-                try {
-                    const result = await predictEmployability(formData);
-                    const isEmployable = result.prediction === 'Employable';
+        try {
+            console.log("Sending prediction request with data:", formData); // Debug log
 
-                    // Update prediction text and icon
-                    predictionText.innerHTML = `
-                        <div class="icon" style="color: ${isEmployable ? '#00C853' : '#FF3D00'};">
-                            ${isEmployable ? '😊' : '😞'}
-                        </div>
-                        <h4 style="color: ${isEmployable ? '#00C853' : '#FF3D00'};">${result.prediction}</h4>
-                    `;
-        // Generate and display feedback in a table format
-        const feedback = generateFeedback(formData);
+            // Get prediction result
+            const result = await predictEmployability(formData);
+            console.log("Received prediction result:", result); // Debug log
+
+            const isEmployable = result.prediction === 'Employable';
+
+            // Save to Firebase with prediction result
+            try {
+                await saveToFirebase(formData, result.prediction);
+                console.log("Successfully saved to Firebase"); // Debug log
+            } catch (firebaseError) {
+                console.error("Firebase save error:", firebaseError);
+                // Continue with the rest of the function even if Firebase save fails
+            }
+
+            // Update prediction text and icon
+            predictionText.innerHTML = `
+                <div class="icon" style="color: ${isEmployable ? '#00C853' : '#FF3D00'};">
+                    ${isEmployable ? '😊' : '😞'}
+                </div>
+                <h4 style="color: ${isEmployable ? '#00C853' : '#FF3D00'};">${result.prediction}</h4>
+            `;
+
+            // Generate and display feedback
+            const feedback = generateFeedback(formData);
             const feedbackTableHTML = `
                 <table class="feedback-table">
                     <tr>
@@ -402,27 +520,29 @@ const response = await fetch(`https://knnpulse-production.up.railway.app/predict
 
             predictionElement.innerHTML = feedbackTableHTML;
 
-                        // Add Print/Save Results Button
+            // Add Print/Save Results Button
             predictionElement.innerHTML += `
                 <button id="printButton" style="margin-top: 20px; padding: 10px 20px; font-size: 16px; cursor: pointer;">
                     Print/Save Results
                 </button>
             `;
 
-                } catch (error) {
-                    predictionElement.innerHTML = `
-                        <span style="color: red;">Error: ${error.message}</span><br>
-                        Please try again or contact support if the problem persists.
-                    `;
-                }
-            });
-        });
+        } catch (error) {
+            console.error("Error during prediction or save:", error); // Debug log
+            predictionElement.innerHTML = `
+                <span style="color: red;">Error: ${error.message}</span><br>
+                Please try again or contact support if the problem persists.
+            `;
+        }
+    });
+});
         document.addEventListener("click", (event) => {
     if (event.target && event.target.id === "printButton") {
         const resultsContent = document.getElementById("results").innerHTML;
         printOrSaveResults(resultsContent);
     }
 });
+
 
 function printOrSaveResults(content) {
     // Create a new window and write the results content to it for printing
@@ -474,6 +594,7 @@ function printOrSaveResults(content) {
 }
 
     </script>
+    
 </body>
 
 </html>
