@@ -310,85 +310,74 @@
 
         return formData;
     }
-
     function calculateSectionScore(sectionData) {
-        let totalScore = 0;
-        let totalCriteria = 0;
-
-        sectionData.questions.forEach(question => {
-            question.criteria.forEach(criterion => {
-                if (criterion.rating) {
-                    totalScore += criterion.rating;
-                    totalCriteria++;
-                }
-            });
-        });
-
-        const score = totalScore / totalCriteria;
-
-        if (score >= 4.21) return 5;
-        else if (score >= 3.41) return 4;
-        else if (score >= 2.61) return 3;
-        else if (score >= 1.81) return 2;
-        else return 1;
-    }
-
-    function displayResults(formData) {
-        const resultsSection = document.getElementById('results');
-        const scoresDiv = document.getElementById('sectionScores');
-        scoresDiv.innerHTML = '';
-
-        formData.sections.forEach(section => {
-            const score = calculateSectionScore(section);
-            const resultItem = document.createElement('div');
-            resultItem.className = 'result-item';
-            resultItem.innerHTML = `
-                <span class="result-label">${section.title}</span>
-                <span class="result-value">${score}</span>
-            `;
-            scoresDiv.appendChild(resultItem);
-        });
-
-        resultsSection.style.display = 'block';
-    }
-
-    function generatePDF() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-
-        const resultsSection = document.getElementById('results');
-        const scoresDiv = document.getElementById('sectionScores');
-        const resultsTitle = document.querySelector('#results h2').innerText;
-
-        let yOffset = 10;
-        doc.setFontSize(16);
-        doc.text(resultsTitle, 10, yOffset);
-
-        yOffset += 10;
-
-        Array.from(scoresDiv.children).forEach(item => {
-            const label = item.querySelector('.result-label').innerText;
-            const value = item.querySelector('.result-value').innerText;
-
-            doc.setFontSize(12);
-            doc.text(`${label}: ${value}`, 10, yOffset);
-            yOffset += 10;
-        });
-
-        doc.save('evaluation-results.pdf');
-    }
-
-    document.getElementById('evaluationForm').addEventListener('submit', function (e) {
-        e.preventDefault();
-        const formData = collectFormData();
-        localStorage.setItem('evaluationData', JSON.stringify(formData));
-        displayResults(formData);
+  let totalScore = 0;
+  let totalCriteria = 0;
+  sectionData.questions.forEach(question => {
+    question.criteria.forEach(criterion => {
+      if (criterion.rating) {
+        totalScore += criterion.rating;
+        totalCriteria++;
+      }
     });
+  });
+  const score = totalScore / totalCriteria;
+  if (score >= 4.21) return { score: 5, rating: 'Excellent' };
+  else if (score >= 3.41) return { score: 4, rating: 'Above Average' };
+  else if (score >= 2.61) return { score: 3, rating: 'Average' };
+  else if (score >= 1.81) return { score: 2, rating: 'Below Average' };
+  else return { score: 1, rating: 'Needs Improvement' };
+}
 
-    document.getElementById('downloadPDFButton').addEventListener('click', function () {
-        generatePDF();
-    });
+function displayResults(formData) {
+  const resultsSection = document.getElementById('results');
+  const scoresDiv = document.getElementById('sectionScores');
+  scoresDiv.innerHTML = '';
+  formData.sections.forEach(section => {
+    const { score, rating } = calculateSectionScore(section);
+    const resultItem = document.createElement('div');
+    resultItem.className = 'result-item';
+    resultItem.innerHTML = `
+      <span class="result-label">${section.title}</span>
+      <span class="result-value">${score}</span>
+      <span class="result-rating">${rating}</span>
+    `;
+    scoresDiv.appendChild(resultItem);
+  });
+  resultsSection.style.display = 'block';
+}
 
+function generatePDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  const resultsSection = document.getElementById('results');
+  const scoresDiv = document.getElementById('sectionScores');
+  const resultsTitle = document.querySelector('#results h2').innerText;
+  let yOffset = 10;
+  doc.setFontSize(16);
+  doc.text(resultsTitle, 10, yOffset);
+  yOffset += 10;
+  Array.from(scoresDiv.children).forEach(item => {
+    const label = item.querySelector('.result-label').innerText;
+    const value = item.querySelector('.result-value').innerText;
+    const rating = item.querySelector('.result-rating').innerText;
+    doc.setFontSize(12);
+    doc.text(`${label}: ${value} (${rating})`, 10, yOffset);
+    yOffset += 10;
+  });
+  doc.save('evaluation-results.pdf');
+}
+
+document.getElementById('evaluationForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  const formData = collectFormData();
+  localStorage.setItem('evaluationData', JSON.stringify(formData));
+  displayResults(formData);
+});
+
+document.getElementById('downloadPDFButton').addEventListener('click', function () {
+  generatePDF();
+});
     renderForm();
 </script>
     
