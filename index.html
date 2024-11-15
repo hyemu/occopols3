@@ -1,21 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OccuPulse - Your path to employability excellence</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Optional: If you want to use the same font as original -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-    </style>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>OccuPulse - Your path to employability excellence</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdn.jsdelivr.net/npm/firebase@9.17.2/firebase-app-compat.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/firebase@9.17.2/firebase-database-compat.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+        <!-- Optional: If you want to use the same font as original -->
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+        <style>
+            body {
+                font-family: 'Inter', sans-serif;
+            }
+            
+        </style>
+    </head>
 <body>
     <!-- Navbar -->
-    <nav class="sticky top-0 bg-[rgb(13,5,35)] py-4">
+    <nav class="sticky top-0 bg-[rgb(13,5,35)] py-4 z-50 shadow-md">
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-center">
                 <a href="/" class="text-white">
@@ -40,23 +44,183 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="py-1">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col lg:flex-row items-center">
-                <div class="lg:w-1/2">
-                    <h1 class="text-5xl font-black tracking-tight mb-8">Your path to employability excellence 💼</h1>
-                    <p class="text-xl mb-8">Empowering your future and navigating through opportunities. Let's get you ready-employed 🤝</p>
-                    <div class="flex flex-col md:flex-row gap-3">
-                        <a href="evaluation.html" class="px-8 py-4 bg-black text-white rounded-lg text-center hover:bg-gray-800 transition-colors">🚀 Let's go!</a>
-                    </div>
-                </div>
-                <div class="lg:w-1/2 mt-8 lg:mt-0">
-                    <img src="https://d1pnnwteuly8z3.cloudfront.net/images/28ac3e86-6501-49f4-a257-812512415a85/f6c906af-3da5-4936-aef6-87ecd19af50d.png" alt="product" class="mx-auto lg:mr-0 lg:pr-6 drop-shadow-lg" />
+<!-- Hero Section -->
+<section class="py-1">
+    <div class="container mx-auto px-4">
+        <div class="flex flex-col lg:flex-row items-center">
+            <div class="lg:w-1/2">
+                <h1 class="text-5xl font-black tracking-tight mb-8">Your path to employability excellence 💼</h1>
+                <p class="text-xl mb-8">Empowering your future and navigating through opportunities. Let's get you ready-employed 🤝</p>
+                <div class="flex flex-col md:flex-row gap-3">
+                    <button id="viewResultsBtn"  class="px-8 py-4 bg-black text-white rounded-lg text-center hover:bg-gray-800 transition-colors">🚀 View My Results!</a>
+                    <button id="openPrivacyModal" class="px-8 py-4 bg-gray-800 text-white rounded-lg text-center hover:bg-gray-700 transition-colors">🔏 Privacy Policy</button>
                 </div>
             </div>
+            <div class="lg:w-1/2 mt-8 lg:mt-0">
+                <img src="https://d1pnnwteuly8z3.cloudfront.net/images/28ac3e86-6501-49f4-a257-812512415a85/f6c906af-3da5-4936-aef6-87ecd19af50d.png" alt="product" class="mx-auto lg:mr-0 lg:pr-6 drop-shadow-lg" />
+            </div>
         </div>
-    </section>
+    </div>
+</section>
+
+<!-- Modal (Privacy Policy) -->
+<div id="privacyModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center hidden z-50">
+    <div class="bg-white p-6 rounded-lg w-full max-w-md">
+        <div class="flex justify-between items-center">
+            <h2 class="text-2xl font-semibold">Privacy Policy</h2>
+            <button id="closePrivacyModal" class="text-gray-500 hover:text-gray-800">
+                <span class="text-2xl">&times;</span>
+            </button>
+        </div>
+        <div class="mt-4 text-gray-800">
+            <p class="mb-4"><i>Updated: November 13, 2024</i></p>
+            <p class="mb-4">OccuPulse Technologies© 2024. All rights reserved.</p>
+            <p class="mb-4">By using this platform, you consent to the collection and processing of your data (Student ID, Name, Department, and Year Level) for research purposes. This data will be kept confidential and used exclusively in accordance with the Data Privacy Act of 2012 in the Philippines.</p>
+            <p>Your privacy is important to us, and we will take all necessary measures to ensure your data is protected and handled securely. This information will not be shared with third parties without your consent.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Modal (View My Result) -->
+<div id="resultModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center hidden z-50">
+    <div class="bg-white p-6 rounded-lg w-full max-w-md relative">
+        <button id="closeResultModal" class="absolute top-2 right-2 text-gray-600 hover:text-black">&times;</button>
+        <h2 class="text-2xl font-semibold mb-4">Enter Student ID</h2>
+        <input type="text" id="studentIdInput" placeholder="Student ID" class="w-full px-4 py-2 border rounded mb-4">
+        <button id="fetchResultBtn" class="w-full px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">Fetch Results</button>
+        <div id="resultStatus" class="mt-4"></div>
+        <div id="downloadBtnContainer" class="mt-4 hidden">
+            <button id="downloadPdfBtn" class="w-full px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors">Download Results</button>
+        </div>
+    </div>
+</div>
+
+<!-- Firebase Configuration -->
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyBdjpUuv4SIeW6ZKgAf_OUqGBk2QNLs0W8",
+        authDomain: "plpdata.firebaseapp.com",
+        databaseURL: "https://plpdata-default-rtdb.firebaseio.com",
+        projectId: "plpdata",
+        storageBucket: "plpdata.firebasestorage.app",
+        messagingSenderId: "157875332363",
+        appId: "1:157875332363:web:61d81bd58116e0234a2e0e",
+        measurementId: "G-XRLKN252WN"
+    };
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // Modal Logic
+    const privacyModal = document.getElementById('privacyModal');
+    const openPrivacyModalButton = document.getElementById('openPrivacyModal');
+    const closePrivacyModalButton = document.getElementById('closePrivacyModal');
+
+    const resultModal = document.getElementById('resultModal');
+    const viewResultsBtn = document.getElementById('viewResultsBtn');
+    const closeResultModalBtn = document.getElementById('closeResultModal');
+    const fetchResultBtn = document.getElementById('fetchResultBtn');
+    const studentIdInput = document.getElementById('studentIdInput');
+    const resultStatus = document.getElementById('resultStatus');
+    const downloadBtnContainer = document.getElementById('downloadBtnContainer');
+    const downloadPdfBtn = document.getElementById('downloadPdfBtn');
+
+    // Open Privacy Modal
+    openPrivacyModalButton.addEventListener('click', () => {
+        privacyModal.classList.remove('hidden');
+    });
+
+    // Close Privacy Modal
+    closePrivacyModalButton.addEventListener('click', () => {
+        privacyModal.classList.add('hidden');
+    });
+
+    // Close modal when clicking outside of it
+    privacyModal.addEventListener('click', (event) => {
+        if (event.target === privacyModal) {
+            privacyModal.classList.add('hidden');
+        }
+    });
+
+    // Open Result Modal
+    viewResultsBtn.addEventListener('click', () => {
+        resultModal.classList.remove('hidden');
+    });
+
+    // Close Result Modal
+    closeResultModalBtn.addEventListener('click', () => {
+        resultModal.classList.add('hidden');
+    });
+
+    // Close modal when clicking outside of it
+    resultModal.addEventListener('click', (event) => {
+        if (event.target === resultModal) {
+            resultModal.classList.add('hidden');
+        }
+    });
+
+    // Fetch Results Logic
+    fetchResultBtn.addEventListener('click', async () => {
+        const studentId = studentIdInput.value.trim();
+        if (!studentId) {
+            resultStatus.innerHTML = `<p class="text-red-500">Please enter a valid Student ID.</p>`;
+            return;
+        }
+
+        resultStatus.innerHTML = `<p class="text-blue-500">Fetching data...</p>`;
+        try {
+            const snapshot = await db.ref().once('value');
+            const data = snapshot.val();
+            let studentData = null;
+            for (const key in data) {
+                if (data[key]['STUDENT ID'] === studentId) {
+                    studentData = data[key];
+                    break;
+                }
+            }
+
+            const currentDateTime = new Date().toLocaleString();
+            if (studentData) {
+                const statusText = studentData['STUDENT PERFORMANCE RATING'] >= 3 ? 
+                    `<p class="text-green-600">Status: Employable</p>` : 
+                    `<p class="text-red-600">Status: Less Employable</p>`;
+                resultStatus.innerHTML = `
+                    ${statusText}
+                    <p class="italic">As of ${currentDateTime}</p>
+                `;
+                downloadBtnContainer.classList.remove('hidden');
+
+                // Attach PDF generation
+                downloadPdfBtn.onclick = () => {
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF();
+                    doc.text(10, 10, 
+`GENDER: ${studentData['GENDER']}
+GENERAL APPEARANCE: ${studentData['GENERAL APPEARANCE']}
+MANNER OF SPEAKING: ${studentData['MANNER OF SPEAKING']}
+DEPARTMENT : ${studentData['DEPARTMENT']}
+MENTAL ALERTNESS: ${studentData['MENTAL ALERTNESS']}
+PHYSICAL CONDITION: ${studentData['PHYSICAL CONDITION']}
+SELF CONFIDENCE: ${studentData['SELF CONFIDENCE']}
+STUDENT ID: ${studentData['STUDENT ID']}
+STUDENT PERFORMANCE RATING: ${studentData['STUDENT PERFORMANCE RATING']}
+YEAR: ${studentData['YEAR']}
+Generated on: ${currentDateTime}`
+                    );
+                    doc.save('Student_Result.pdf');
+                };
+            } else {
+                resultStatus.innerHTML = `<p class="text-red-500">Student ID not found.</p>`;
+                downloadBtnContainer.classList.add('hidden');
+            }
+        } catch (error) {
+            resultStatus.innerHTML = `<p class="text-red-500">Error fetching data.</p>`;
+            console.error(error);
+        }
+    });
+</script>
+
+
+
 
     <!-- Features Section -->
     <section class="py-20">
