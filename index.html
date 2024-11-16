@@ -332,10 +332,61 @@ emailModal.addEventListener('click', (event) => {
     }
 });
 
-// Handle email form submission
+// Place this at the top of your JavaScript file, along with other global variables/constants
+const comments = {
+    'GENERAL APPEARANCE': {
+        low: "Your presentation was not aligned with professional standards. Consider investing in business attire and maintaining a well-groomed appearance.",
+        medium: "You presented yourself professionally, though there's room for improvement in personal grooming and attire to match industry standards.",
+        high: "Your appearance was impeccable and well-suited to a professional setting. Continue maintaining this high standard."
+    },
+    'MANNER OF SPEAKING': {
+        low: "Your manner of speaking was unclear and lacked confidence. Focus on improving clarity and practicing your speaking skills.",
+        medium: "You spoke clearly with a confident tone, though enhancing your engagement and articulation could further improve your delivery.",
+        high: "Your speaking manner was articulate and engaging, showcasing excellent communication skills."
+    },
+    'PHYSICAL CONDITION': {
+        low: "Your physical appearance suggested a lack of attention to health. Consider regular exercise and a healthy diet to improve your energy levels.",
+        medium: "You appeared generally healthy and energetic, but maintaining consistent wellness practices could enhance your performance.",
+        high: "You exhibited outstanding physical vitality and health, reflecting well on your overall fitness and energy levels."
+    },
+    'MENTAL ALERTNESS': {
+        low: "Improve your mental alertness through activities that stimulate cognitive functions, such as puzzles or brain exercises.",
+        medium: "You demonstrated good mental alertness with occasional lapses. Engaging in more mindfulness practices could help improve focus.",
+        high: "Your mental alertness was exceptional, showcasing quick thinking and strong problem-solving abilities."
+    },
+    'SELF-CONFIDENCE': {
+        low: "Work on building your self-confidence through positive self-talk and preparation. Consider practice sessions to improve your presentation.",
+        medium: "You displayed a solid level of self-confidence. Continue developing your self-assurance through more experience and feedback.",
+        high: "Your self-confidence was outstanding, with a strong presence and poise that positively impacted your performance."
+    },
+    'ABILITY TO PRESENT IDEAS': {
+        low: "Your presentation of ideas was unclear and disorganized. Practice structuring your thoughts and using visual aids to improve clarity.",
+        medium: "You presented your ideas effectively but could benefit from refining your organization and clarity for even greater impact.",
+        high: "You demonstrated an excellent ability to present ideas, with clear and compelling communication that effectively conveyed your message."
+    },
+    'COMMUNICATION SKILLS': {
+        low: "Your communication skills need improvement. Work on active listening and clear, concise messaging to enhance your interactions.",
+        medium: "Your communication was generally effective, though focusing on enhancing clarity and engagement can make your interactions even better.",
+        high: "Your communication skills were exceptional, with clear, effective, and engaging interactions that greatly contributed to the discussion."
+    },
+    'Student Performance Rating': {
+        low: "Your performance needs improvement. Consider focusing on key areas of study and seeking additional help to boost your grades.",
+        medium: "You have performed well academically, but there is room to enhance your performance by focusing on areas where you can further excel.",
+        high: "Your academic performance is exemplary, reflecting a high level of understanding and achievement in your studies."
+    }
+};
+
+// Your getFeedbackLevel function should also be at the top level
+const getFeedbackLevel = (score) => {
+    if (score <= 2) return 'low';
+    if (score <= 4) return 'medium';
+    return 'high';
+};
+
+
 emailForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    
+   
     if (!currentStudentData) {
         emailStatus.innerHTML = `<p class="text-red-500">No student data available.</p>`;
         return;
@@ -345,6 +396,13 @@ emailForm.addEventListener('submit', async (e) => {
     emailStatus.innerHTML = `<p class="text-blue-500">Sending email...</p>`;
 
     try {
+        // Get feedback based on scores
+        const getFeedbackLevel = (score) => {
+            if (score <= 2) return 'low';
+            if (score <= 4) return 'medium';
+            return 'high';
+        };
+
         // Format the student data for email
         const templateParams = {
             to_email: email,
@@ -360,18 +418,28 @@ emailForm.addEventListener('submit', async (e) => {
             physical_condition: currentStudentData['PHYSICAL CONDITION'],
             self_confidence: currentStudentData['SELF CONFIDENCE'],
             performance_rating: currentStudentData['STUDENT PERFORMANCE RATING'],
-            date: new Date().toLocaleString()
+            date: new Date().toLocaleString(),
+            
+            // Add feedback for each category
+            general_appearance_feedback: comments['GENERAL APPEARANCE'][getFeedbackLevel(currentStudentData['GENERAL APPEARANCE'])],
+            manner_of_speaking_feedback: comments['MANNER OF SPEAKING'][getFeedbackLevel(currentStudentData['MANNER OF SPEAKING'])],
+            mental_alertness_feedback: comments['MENTAL ALERTNESS'][getFeedbackLevel(currentStudentData['MENTAL ALERTNESS'])],
+            ability_ideas_feedback: comments['ABILITY TO PRESENT IDEAS'][getFeedbackLevel(currentStudentData['ABILITY TO PRESENT IDEAS'])],
+            communication_skills_feedback: comments['COMMUNICATION SKILLS'][getFeedbackLevel(currentStudentData['COMMUNICATION SKILLS'])],
+            physical_condition_feedback: comments['PHYSICAL CONDITION'][getFeedbackLevel(currentStudentData['PHYSICAL CONDITION'])],
+            self_confidence_feedback: comments['SELF-CONFIDENCE'][getFeedbackLevel(currentStudentData['SELF CONFIDENCE'])],
+            performance_rating_feedback: comments['Student Performance Rating'][getFeedbackLevel(currentStudentData['STUDENT PERFORMANCE RATING'])]
         };
 
         // Send email using EmailJS
         await emailjs.send(
-            'service_aqaqr8d', // Replace with your EmailJS service ID
-            'template_a1frimc', // Replace with your EmailJS template ID
+            'service_aqaqr8d',
+            'template_a1frimc',
             templateParams
         );
 
         emailStatus.innerHTML = `<p class="text-green-500">Email sent successfully!</p>`;
-        
+       
         // Store the email request in Firebase for tracking
         const emailRef = db.ref('emailRequests').push();
         await emailRef.set({
@@ -385,13 +453,11 @@ emailForm.addEventListener('submit', async (e) => {
         setTimeout(() => {
             emailModal.classList.add('hidden');
         }, 3000);
-
     } catch (error) {
         emailStatus.innerHTML = `<p class="text-red-500">Error sending email. Please try again.</p>`;
         console.error('Error:', error);
     }
 });
-
 // Email Modal Event Listeners
 emailPdfBtn.addEventListener('click', () => {
     emailModal.classList.remove('hidden');
