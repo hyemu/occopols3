@@ -41,6 +41,14 @@
                     <a href="evaluation.html" class="px-6 py-2 bg-[rgb(106,27,154)] text-[#d4cfcf] font-semibold rounded hover:bg-opacity-90 transition-colors">Evaluate Now! ➔</a>
                 </div>
             </div>
+
+                  <!-- Mobile menu content -->
+                  <div class="hidden lg:hidden mt-4" id="mobile-menu">
+                    <div class="flex flex-col space-y-4 px-2">
+                        <a href="#" class="text-white font-semibold py-2 border-b border-white/10">🧑‍💻 v2 Repository</a>
+                        <a href="evaluation.html" class="text-[#d4cfcf] font-semibold py-2">Evaluate Now! ➔</a>
+                    </div>
+                </div>
         </div>
     </nav>
 
@@ -341,11 +349,11 @@ Generated on: ${currentDateTime}`
     <!-- Mobile Menu Script -->
     <script>
         const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const nav = document.querySelector('nav');
+        const mobileMenu = document.getElementById('mobile-menu');
         
         mobileMenuButton.addEventListener('click', () => {
-            nav.classList.toggle('mobile-menu-open');
-            // Add your mobile menu toggle logic here
+            // Toggle between hidden and block classes
+            mobileMenu.classList.toggle('hidden');
         });
     </script>
 </body>
