@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>OccuPulse - Your path to employability excellence</title>
         <script src="https://cdn.tailwindcss.com"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/firebase@9.17.2/firebase-app-compat.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/firebase@9.17.2/firebase-database-compat.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
@@ -98,7 +99,7 @@
     </div>
 </div>
 
-<!-- Modal (View My Result) -->
+<!-- Modified Modal (View My Result) -->
 <div id="resultModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center hidden z-50">
     <div class="bg-white p-6 rounded-lg w-full max-w-md relative">
         <button id="closeResultModal" class="absolute top-2 right-2 text-gray-600 hover:text-black">&times;</button>
@@ -106,9 +107,31 @@
         <input type="text" id="studentIdInput" placeholder="Student ID" class="w-full px-4 py-2 border rounded mb-4">
         <button id="fetchResultBtn" class="w-full px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">Fetch Results</button>
         <div id="resultStatus" class="mt-4"></div>
-        <div id="downloadBtnContainer" class="mt-4 hidden">
+        <div id="downloadBtnContainer" class="mt-4 hidden space-y-2">
             <button id="downloadPdfBtn" class="w-full px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors">Download Results</button>
+            <button id="emailPdfBtn" class="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">Send to Email</button>
         </div>
+    </div>
+</div>
+
+<!-- Email Modal -->
+<div id="emailModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center hidden z-50">
+    <div class="bg-white p-6 rounded-lg w-full max-w-md relative">
+        <button id="closeEmailModal" class="absolute top-2 right-2 text-gray-600 hover:text-black">&times;</button>
+        <h2 class="text-2xl font-semibold mb-4">Send Results to Email</h2>
+        <form id="emailForm" class="space-y-4">
+            <div>
+                <label for="emailInput" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                <input type="email" id="emailInput" name="email" required 
+                    class="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-purple-500 focus:border-purple-500" 
+                    placeholder="Enter your email">
+            </div>
+            <button type="submit" id="sendEmailBtn" 
+                class="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                Send Email
+            </button>
+        </form>
+        <div id="emailStatus" class="mt-4"></div>
     </div>
 </div>
 
@@ -235,6 +258,196 @@ Generated on: ${currentDateTime}`
             console.error(error);
         }
     });
+
+// Initialize EmailJS with your public key
+(function() {
+    emailjs.init("N9dWrMpRRl20jwxrd"); // Replace with your EmailJS public key
+})();
+
+// Add these variable declarations after your existing ones
+const emailModal = document.getElementById('emailModal');
+const closeEmailModal = document.getElementById('closeEmailModal');
+const emailPdfBtn = document.getElementById('emailPdfBtn');
+const emailForm = document.getElementById('emailForm');
+const emailInput = document.getElementById('emailInput');
+const emailStatus = document.getElementById('emailStatus');
+
+let currentStudentData = null;
+
+// Modify your existing fetchResultBtn event listener to store the student data
+fetchResultBtn.addEventListener('click', async () => {
+    const studentId = studentIdInput.value.trim();
+    if (!studentId) {
+        resultStatus.innerHTML = `<p class="text-red-500">Please enter a valid Student ID.</p>`;
+        return;
+    }
+
+    resultStatus.innerHTML = `<p class="text-blue-500">Fetching data...</p>`;
+    try {
+        const snapshot = await db.ref().once('value');
+        const data = snapshot.val();
+        currentStudentData = null;
+        
+        for (const key in data) {
+            if (data[key]['STUDENT ID'] === studentId) {
+                currentStudentData = data[key];
+                break;
+            }
+        }
+
+        const currentDateTime = new Date().toLocaleString();
+        if (currentStudentData) {
+            const statusText = currentStudentData['Employability'] === 'Employable' ?  
+                `<p class="text-green-600">Status: Employable</p>` : 
+                `<p class="text-red-600">Status: Less Employable</p>`;
+            resultStatus.innerHTML = `
+                ${statusText}
+                <p class="italic">As of ${currentDateTime}</p>
+            `;
+            downloadBtnContainer.classList.remove('hidden');
+        } else {
+            resultStatus.innerHTML = `<p class="text-red-500">Student ID not found.</p>`;
+            downloadBtnContainer.classList.add('hidden');
+        }
+    } catch (error) {
+        resultStatus.innerHTML = `<p class="text-red-500">Error fetching data.</p>`;
+        console.error(error);
+    }
+});
+
+// Email Modal Event Listeners
+emailPdfBtn.addEventListener('click', () => {
+    emailModal.classList.remove('hidden');
+    emailStatus.innerHTML = '';
+    emailInput.value = '';
+});
+
+closeEmailModal.addEventListener('click', () => {
+    emailModal.classList.add('hidden');
+});
+
+emailModal.addEventListener('click', (event) => {
+    if (event.target === emailModal) {
+        emailModal.classList.add('hidden');
+    }
+});
+
+// Handle email form submission
+emailForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    if (!currentStudentData) {
+        emailStatus.innerHTML = `<p class="text-red-500">No student data available.</p>`;
+        return;
+    }
+
+    const email = emailInput.value.trim();
+    emailStatus.innerHTML = `<p class="text-blue-500">Sending email...</p>`;
+
+    try {
+        // Format the student data for email
+        const templateParams = {
+            to_email: email,
+            student_id: currentStudentData['STUDENT ID'],
+            department: currentStudentData['DEPARTMENT'],
+            year: currentStudentData['YEAR'],
+            employability: currentStudentData['Employability'],
+            general_appearance: currentStudentData['GENERAL APPEARANCE'],
+            manner_of_speaking: currentStudentData['MANNER OF SPEAKING'],
+            mental_alertness: currentStudentData['MENTAL ALERTNESS'],
+            ability_ideas: currentStudentData['ABILITY TO PRESENT IDEAS'],
+            communication_skills: currentStudentData['COMMUNICATION SKILLS'],
+            physical_condition: currentStudentData['PHYSICAL CONDITION'],
+            self_confidence: currentStudentData['SELF CONFIDENCE'],
+            performance_rating: currentStudentData['STUDENT PERFORMANCE RATING'],
+            date: new Date().toLocaleString()
+        };
+
+        // Send email using EmailJS
+        await emailjs.send(
+            'service_aqaqr8d', // Replace with your EmailJS service ID
+            'template_a1frimc', // Replace with your EmailJS template ID
+            templateParams
+        );
+
+        emailStatus.innerHTML = `<p class="text-green-500">Email sent successfully!</p>`;
+        
+        // Store the email request in Firebase for tracking
+        const emailRef = db.ref('emailRequests').push();
+        await emailRef.set({
+            email: email,
+            studentId: currentStudentData['STUDENT ID'],
+            timestamp: firebase.database.ServerValue.TIMESTAMP,
+            status: 'sent'
+        });
+
+        // Close the modal after a delay
+        setTimeout(() => {
+            emailModal.classList.add('hidden');
+        }, 3000);
+
+    } catch (error) {
+        emailStatus.innerHTML = `<p class="text-red-500">Error sending email. Please try again.</p>`;
+        console.error('Error:', error);
+    }
+});
+
+// Email Modal Event Listeners
+emailPdfBtn.addEventListener('click', () => {
+    emailModal.classList.remove('hidden');
+    emailStatus.innerHTML = '';
+    emailInput.value = '';
+});
+
+closeEmailModal.addEventListener('click', () => {
+    emailModal.classList.add('hidden');
+});
+
+emailModal.addEventListener('click', (event) => {
+    if (event.target === emailModal) {
+        emailModal.classList.add('hidden');
+    }
+});
+
+// Send Email Function
+sendEmailBtn.addEventListener('click', async () => {
+    const email = emailInput.value.trim();
+    if (!email) {
+        emailStatus.innerHTML = `<p class="text-red-500">Please enter a valid email address.</p>`;
+        return;
+    }
+
+    if (!currentStudentData) {
+        emailStatus.innerHTML = `<p class="text-red-500">No student data available.</p>`;
+        return;
+    }
+
+    emailStatus.innerHTML = `<p class="text-blue-500">Sending email...</p>`;
+
+    try {
+        // Create a new reference for storing email requests
+        const emailRef = db.ref('emailRequests').push();
+        
+        // Store the email request in Firebase
+        await emailRef.set({
+            email: email,
+            studentData: currentStudentData,
+            timestamp: firebase.database.ServerValue.TIMESTAMP,
+            status: 'pending'
+        });
+
+        emailStatus.innerHTML = `<p class="text-green-500">Email request sent successfully! You will receive your results shortly.</p>`;
+        
+        // Optional: Close the email modal after a delay
+        setTimeout(() => {
+            emailModal.classList.add('hidden');
+        }, 7000);
+
+    } catch (error) {
+        emailStatus.innerHTML = `<p class="text-red-500">Error sending email. Please try again.</p>`;
+        console.error('Error:', error);
+    }
+});
 </script>
 
 
