@@ -197,7 +197,7 @@
 
             const currentDateTime = new Date().toLocaleString();
             if (studentData) {
-                const statusText = studentData['STUDENT PERFORMANCE RATING'] >= 3 ? 
+                const statusText = studentData['Employability'] === 'Employable' ?  
                     `<p class="text-green-600">Status: Employable</p>` : 
                     `<p class="text-red-600">Status: Less Employable</p>`;
                 resultStatus.innerHTML = `
@@ -221,6 +221,7 @@ SELF CONFIDENCE: ${studentData['SELF CONFIDENCE']}
 STUDENT ID: ${studentData['STUDENT ID']}
 STUDENT PERFORMANCE RATING: ${studentData['STUDENT PERFORMANCE RATING']}
 YEAR: ${studentData['YEAR']}
+Employability : ${studentData['Employability']}
 Generated on: ${currentDateTime}`
                     );
                     doc.save('Student_Result.pdf');
