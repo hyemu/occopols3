@@ -45,23 +45,32 @@
     </nav>
 
 <!-- Hero Section -->
-<section class="py-1">
-    <div class="container mx-auto px-4">
-        <div class="flex flex-col lg:flex-row items-center">
+<section class="py-16 bg-gradient-to-b from-purple-50 via-white to-purple-100">
+    <div class="container mx-auto px-6">
+        <div class="flex flex-col lg:flex-row items-center animate-fadeIn">
             <div class="lg:w-1/2">
-                <h1 class="text-5xl font-black tracking-tight mb-8">Your path to employability excellence 💼</h1>
-                <p class="text-xl mb-8">Empowering your future and navigating through opportunities. Let's get you ready-employed 🤝</p>
-                <div class="flex flex-col md:flex-row gap-3">
-                    <button id="viewResultsBtn"  class="px-8 py-4 bg-black text-white rounded-lg text-center hover:bg-gray-800 transition-colors">🚀 View My Results!</a>
-                    <button id="openPrivacyModal" class="px-8 py-4 bg-gray-800 text-white rounded-lg text-center hover:bg-gray-700 transition-colors">🔏 Privacy Policy</button>
+                <h1 class="text-6xl font-extrabold tracking-tight mb-8 leading-tight text-gray-900">
+                    Your path to employability excellence 💼
+                </h1>
+                <p class="text-lg mb-10 text-gray-700">
+                    Empowering your future and navigating through opportunities. Let's get you ready-employed 🤝
+                </p>
+                <div class="flex flex-col md:flex-row gap-4">
+                    <button id="viewResultsBtn" class="px-8 py-4 bg-black text-white rounded-lg text-center hover:bg-gray-800 transition-all transform hover:scale-105 duration-300">
+                        🚀 View My Results!
+                    </button>
+                    <button id="openPrivacyModal" class="px-8 py-4 bg-gray-800 text-white rounded-lg text-center hover:bg-gray-700 transition-all transform hover:scale-105 duration-300">
+                        🔏 Privacy Policy
+                    </button>
                 </div>
             </div>
             <div class="lg:w-1/2 mt-8 lg:mt-0">
-                <img src="https://d1pnnwteuly8z3.cloudfront.net/images/28ac3e86-6501-49f4-a257-812512415a85/f6c906af-3da5-4936-aef6-87ecd19af50d.png" alt="product" class="mx-auto lg:mr-0 lg:pr-6 drop-shadow-lg" />
+                <img src="https://d1pnnwteuly8z3.cloudfront.net/images/28ac3e86-6501-49f4-a257-812512415a85/f6c906af-3da5-4936-aef6-87ecd19af50d.png" alt="product" class="mx-auto lg:mr-0 lg:pr-6 drop-shadow-lg hover:scale-105 transition-transform duration-300 ease-in-out" />
             </div>
         </div>
     </div>
 </section>
+
 
 <!-- Modal (Privacy Policy) -->
 <div id="privacyModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center hidden z-50">
@@ -220,137 +229,114 @@ Generated on: ${currentDateTime}`
 </script>
 
 
-
-
-    <!-- Features Section -->
-    <section class="py-20">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <p class="font-semibold mb-2 uppercase text-xl">hmmm?🤔💭</p>
-                <h2 class="text-4xl font-semibold">
-                    With OccuPulse, 
-                    <span class="bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">You can...</span>
-                </h2>
+<!-- Features Section -->
+<section class="py-20 bg-gradient-to-b from-purple-100 via-white to-purple-50">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-16">
+            <p class="font-semibold mb-4 uppercase text-xl text-gray-700">hmmm?🤔💭</p>
+            <h2 class="text-4xl font-extrabold bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">
+                With OccuPulse, <span class="animate-textSlide">You can...</span>
+            </h2>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 animate-fadeInUp">
+            <!-- Feature Cards -->
+            <div class="p-6 rounded-lg shadow-lg bg-white transform hover:-translate-y-2 transition-transform duration-300">
+                <div class="h-1 mb-6 bg-gradient-to-r from-purple-600 to-blue-500"></div>
+                <h3 class="text-2xl font-semibold mb-4">Employability Evaluation Form</h3>
+                <p class="text-gray-600">The form is ready and already waiting for you! Just answer it honestly though.</p>
             </div>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Feature 1 -->
-                <div class="p-6 rounded">
-                    <div class="h-1 mb-12 bg-gradient-to-r from-purple-600 to-blue-500"></div>
-                    <h3 class="text-xl font-semibold mb-2">Employability Evaluation Form</h3>
-                    <p class="text-gray-600">The form is ready and already waiting for you! Just answer it honestly though.</p>
-                </div>
-
-                <!-- Feature 2 -->
-                <div class="p-6 rounded">
-                    <div class="h-1 mb-12 bg-gradient-to-r from-purple-600 to-blue-500"></div>
-                    <h3 class="text-xl font-semibold mb-2">Predictive Analysis</h3>
-                    <p class="text-gray-600">After the evaluation, you can see your standing and the understanding of the algorithm based on your scores</p>
-                </div>
-
-                <!-- Feature 3 -->
-                <div class="p-6 rounded">
-                    <div class="h-1 mb-12 bg-gradient-to-r from-purple-600 to-blue-500"></div>
-                    <h3 class="text-xl font-semibold mb-2">Feedback straight from the industry</h3>
-                    <p class="text-gray-600">Get industry-standards feedback, words from an HR Professional!</p>
-                </div>
-
-                <!-- Feature 4 -->
-                <div class="p-6 rounded">
-                    <div class="h-1 mb-12 bg-gradient-to-r from-purple-600 to-blue-500"></div>
-                    <h3 class="text-xl font-semibold mb-2">Holistic Data</h3>
-                    <p class="text-gray-600">See the real-time data for those nerds that needs data... did somebody says data? data? We got you!</p>
-                </div>
+            <div class="p-6 rounded-lg shadow-lg bg-white transform hover:-translate-y-2 transition-transform duration-300">
+                <div class="h-1 mb-6 bg-gradient-to-r from-purple-600 to-blue-500"></div>
+                <h3 class="text-2xl font-semibold mb-4">Predictive Analysis</h3>
+                <p class="text-gray-600">After the evaluation, you can see your standing and the understanding of the algorithm based on your scores.</p>
+            </div>
+            <div class="p-6 rounded-lg shadow-lg bg-white transform hover:-translate-y-2 transition-transform duration-300">
+                <div class="h-1 mb-6 bg-gradient-to-r from-purple-600 to-blue-500"></div>
+                <h3 class="text-2xl font-semibold mb-4">Feedback straight from the industry</h3>
+                <p class="text-gray-600">Get industry-standards feedback, words from an HR Professional!</p>
+            </div>
+            <div class="p-6 rounded-lg shadow-lg bg-white transform hover:-translate-y-2 transition-transform duration-300">
+                <div class="h-1 mb-6 bg-gradient-to-r from-purple-600 to-blue-500"></div>
+                <h3 class="text-2xl font-semibold mb-4">Holistic Data</h3>
+                <p class="text-gray-600">See the real-time data for those nerds that need data... did somebody say data? We've got you!</p>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- How It Works Section -->
-    <section class="py-28 relative z-10">
-        <div class="container mx-auto px-4">
-            <h2 class="text-4xl font-semibold text-center mb-12">🥸 How It Works</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
-                <!-- Step 1 -->
-                <div class="text-center relative">
-                    <div class="hidden md:block absolute h-0.5 w-full bg-black top-[20px] -z-10"></div>
-                    <div class="bg-purple-600 rounded-full h-10 w-10 flex items-center justify-center text-white font-semibold mx-auto">1</div>
-                    <h5 class="font-semibold mt-3 mb-3">📜 Evaluate Yourself</h5>
-                    <p class="text-gray-600">Use the Employability Evaluation Form to answer situational question and rate yourself 1-5 based on what you are really capable of.</p>
-                </div>
-                
-
-                <!-- Step 2 -->
-                <div class="text-center relative">
-                    <div class="hidden md:block absolute h-0.5 w-full bg-black top-[20px] -z-10"></div>
-                    <div class="bg-purple-600 rounded-full h-10 w-10 flex items-center justify-center text-white font-semibold mx-auto">2</div>
-                    <h5 class="font-semibold mt-3 mb-3">🚀 Input Score to the Predictor</h5>
-                    <p class="text-gray-600">With OccuPulse's advanced KNN-powered algorithm, you can see the results of how you performed and a comprehensive feedback!</p>
-                </div>
-
-
-                <!-- Step 3 -->
-                <div class="text-center relative">
-                    <div class="hidden md:block absolute h-0.5 w-full bg-black top-[20px] -z-10"></div>
-                    <div class="bg-purple-600 rounded-full h-10 w-10 flex items-center justify-center text-white font-semibold mx-auto">3</div>
-                    <h5 class="font-semibold mt-3 mb-3">📊 See Data Analysis</h5>
-                    <p class="text-gray-600">Wanna see some data? Say less to! Head over to this section to have a view and understanding of the overall system's progress.</p>
-                </div>
-
+<!-- How It Works Section -->
+<section class="py-28 bg-gradient-to-b from-purple-50 via-white to-purple-100 relative z-10">
+    <div class="container mx-auto px-6">
+        <h2 class="text-4xl font-extrabold text-center mb-12 text-gray-900">🥸 How It Works</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 items-start animate-fadeInUp">
+            <!-- Step Cards -->
+            <div class="text-center relative">
+                <div class="hidden md:block absolute h-0.5 w-full bg-gray-300 top-[20px] -z-10"></div>
+                <div class="bg-purple-600 rounded-full h-12 w-12 flex items-center justify-center text-white font-semibold mx-auto shadow-lg animate-bounce">1</div>
+                <h5 class="font-semibold mt-4 mb-2 text-xl">📜 Evaluate Yourself</h5>
+                <p class="text-gray-600">Use the Employability Evaluation Form to answer situational questions and rate yourself 1-5 based on what you are truly capable of.</p>
+            </div>
+            <div class="text-center relative">
+                <div class="hidden md:block absolute h-0.5 w-full bg-gray-300 top-[20px] -z-10"></div>
+                <div class="bg-purple-600 rounded-full h-12 w-12 flex items-center justify-center text-white font-semibold mx-auto shadow-lg animate-bounce delay-75">2</div>
+                <h5 class="font-semibold mt-4 mb-2 text-xl">🚀 Input Score to the Predictor</h5>
+                <p class="text-gray-600">With OccuPulse's advanced KNN-powered algorithm, see how you performed and receive comprehensive feedback!</p>
+            </div>
+            <div class="text-center relative">
+                <div class="hidden md:block absolute h-0.5 w-full bg-gray-300 top-[20px] -z-10"></div>
+                <div class="bg-purple-600 rounded-full h-12 w-12 flex items-center justify-center text-white font-semibold mx-auto shadow-lg animate-bounce delay-150">3</div>
+                <h5 class="font-semibold mt-4 mb-2 text-xl">📊 See Data Analysis</h5>
+                <p class="text-gray-600">Wanna see some data? Say no more! Explore this section to view and understand the overall system's progress.</p>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Team Section -->
-    <section class="pt-12 pb-28">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <div class="bg-purple-600 h-1 w-[50px] mx-auto mb-6 rounded-full"></div>
-                <h2 class="text-4xl font-black tracking-tight">😎 Meet the Team!</h2>
+<!-- Team Section -->
+<section class="pt-16 pb-28 bg-gradient-to-b from-purple-100 via-white to-purple-50">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-16">
+            <div class="bg-gradient-to-r from-purple-600 to-blue-500 h-1 w-16 mx-auto mb-4 rounded-full"></div>
+            <h2 class="text-4xl font-extrabold text-gray-900 tracking-tight">😎 Meet the Team!</h2>
+        </div>
+        <div class="flex flex-wrap justify-center gap-12 animate-fadeIn">
+            <!-- Team Member Cards -->
+            <div class="w-40 text-center">
+                <div class="w-[100px] h-[100px] rounded-full overflow-hidden mx-auto shadow-lg transition-transform transform hover:scale-110 duration-300">
+                    <img src="https://lh3.googleusercontent.com/a/ACg8ocKVFwdOvNJ4iSydpIEWhhBzN6nGHVSwTQzj0XANCjCP9asex3g=s396-c-no" alt="Gabriel Ventura" class="w-full h-full object-cover" />
+                </div>
+                <h5 class="font-semibold mt-4">Gabriel Ventura</h5>
+                <p class="text-sm text-gray-600">Lead Developer</p>
             </div>
-
-            <div class="flex flex-wrap justify-center gap-8">
-                <!-- Team Member 1 -->
-                <div class="w-6/12 sm:w-3/12 lg:w-2/12 text-center">
-                    <div class="w-[100px] h-[100px] rounded-full overflow-hidden mx-auto">
-                        <img src="https://lh3.googleusercontent.com/a/ACg8ocKVFwdOvNJ4iSydpIEWhhBzN6nGHVSwTQzj0XANCjCP9asex3g=s396-c-no" alt="Gabriel Ventura" class="w-full h-full object-cover" />
-                    </div>
-                    <h5 class="font-semibold mt-2 mb-0">Gabriel Ventura</h5>
-                    <p class="font-semibold text-sm text-gray-600">Lead Developer</p>
+            <div class="w-40 text-center">
+                <div class="w-[100px] h-[100px] rounded-full overflow-hidden mx-auto shadow-lg transition-transform transform hover:scale-110 duration-300">
+                    <img src="https://lh3.googleusercontent.com/a-/ALV-UjVlnrPJJbbjzw-Egt7aW__lpXyE5xbvppzUb-1FUc7npITYev8=s800-c" alt="Raven Drake Cruz" class="w-full h-full object-cover" />
                 </div>
-
-                <!-- Team Member 2 -->
-                <div class="w-6/12 sm:w-3/12 lg:w-2/12 text-center">
-                    <div class="w-[100px] h-[100px] rounded-full overflow-hidden mx-auto">
-                        <img src="https://lh3.googleusercontent.com/a-/ALV-UjVlnrPJJbbjzw-Egt7aW__lpXyE5xbvppzUb-1FUc7npITYev8=s800-c" alt="Raven Drake Cruz" class="w-full h-full object-cover" />
-                    </div>
-                    <h5 class="font-semibold mt-2 mb-0">Raven Drake Cruz</h5>
-                    <p class="font-semibold text-sm text-gray-600">Researcher</p>
+                <h5 class="font-semibold mt-4">Raven Drake Cruz</h5>
+                <p class="text-sm text-gray-600">Researcher</p>
+            </div>
+            <div class="w-40 text-center">
+                <div class="w-[100px] h-[100px] rounded-full overflow-hidden mx-auto shadow-lg transition-transform transform hover:scale-110 duration-300">
+                    <img src="https://lh3.googleusercontent.com/a-/ALV-UjXqRjFuOMXGVYYHqm16xpRwbMN7ay4tvG_f0YDyVbcjjnlmcu9h=s800-c" alt="Joshua Ezekiel Perez" class="w-full h-full object-cover" />
                 </div>
-
-                <!-- Team Member 3 -->
-                <div class="w-6/12 sm:w-3/12 lg:w-2/12 text-center">
-                    <div class="w-[100px] h-[100px] rounded-full overflow-hidden mx-auto">
-                        <img src="https://lh3.googleusercontent.com/a-/ALV-UjXqRjFuOMXGVYYHqm16xpRwbMN7ay4tvG_f0YDyVbcjjnlmcu9h=s800-c" alt="Joshua Ezekiel Perez" class="w-full h-full object-cover" />
-                    </div>
-                    <h5 class="font-semibold mt-2 mb-0">Joshua Ezekiel Perez</h5>
-                    <p class="font-semibold text-sm text-gray-600">External Resources Coordinator</p>
-                </div>
+                <h5 class="font-semibold mt-4">Joshua Ezekiel Perez</h5>
+                <p class="text-sm text-gray-600">External Resources Coordinator</p>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Footer -->
-    <footer class="py-6">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <p class="text-gray-600">© 2024 OccuPulse Technologies. All rights reserved.</p>
-                <div class="flex gap-4 mt-4 md:mt-0">
-
-                </div>
+<!-- Footer -->
+<footer class="py-8 bg-gradient-to-t from-gray-900 to-purple-900 text-gray-300">
+    <div class="container mx-auto px-6">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+            <p>© 2024 OccuPulse Technologies. All rights reserved.</p>
+            <div class="flex gap-4 mt-4 md:mt-0">
+                <!-- Add social icons or links here if needed -->
             </div>
         </div>
-    </footer>
+    </div>
+</footer>
 
     <!-- Mobile Menu Script -->
     <script>
